@@ -1,0 +1,57 @@
+<idea-plugin version="2">
+  <id>com.neon.intellij.plugins.gitlab</id>
+  <name>GitLab Integration Plugin</name>
+  <version>1.0</version>
+  <vendor email="diogo.sousa.neves@gmail.com" url="">Diogo Neves</vendor>
+
+  <description><![CDATA[
+    GitLab Integration plugin, <br>
+    will be able to work with projects and their issues
+    ]]></description>
+
+  <change-notes><![CDATA[
+    Plugin creation<br>
+    change notes here
+    ]]>
+  </change-notes>
+
+  <!-- please see http://confluence.jetbrains.com/display/IDEADEV/Build+Number+Ranges for description -->
+  <idea-version since-build="131"/>
+
+  <!-- please see http://confluence.jetbrains.com/display/IDEADEV/Plugin+Compatibility+with+IntelliJ+Platform+Products
+       on how to target different products -->
+  <!-- uncomment to enable plugin in all products
+  <depends>com.intellij.modules.lang</depends>
+  -->
+
+  <extensions defaultExtensionNs="com.intellij">
+    <!-- Add your extensions here -->
+
+      <!-- Configuration state service ( persistable settings ) -->
+      <applicationService serviceInterface="com.neon.intellij.plugins.gitlab.model.intellij.ConfigurableState"
+                          serviceImplementation="com.neon.intellij.plugins.gitlab.model.intellij.ConfigurableState"/>
+
+      <!-- provider for the configurable instance ( configuration settings ) -->
+      <applicationConfigurable id="GitLabConfigurableProvider" provider="com.neon.intellij.plugins.gitlab.view.configurable.GitLabConfigurableProvider" />
+
+      <!-- plugin tool window -->
+      <toolWindow id="GitLabIntegration" anchor="bottom" factoryClass="com.neon.intellij.plugins.gitlab.GitLabToolWindowFactory"/>
+
+  </extensions>
+
+  <application-components>
+    <!-- Add your application components here -->
+      <component>
+          <implementation-class>com.neon.intellij.plugins.gitlab.controller.editor.GLEditorProvider</implementation-class>
+      </component>
+  </application-components>
+
+  <project-components>
+    <!-- Add your project components here -->
+  </project-components>
+
+  <actions>
+    <!-- Add your actions here -->
+  </actions>
+
+</idea-plugin>
