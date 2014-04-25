@@ -25,7 +25,7 @@ public class GLIssueEditorView extends JPanel implements EditableView<GitlabIssu
     private final JTextField textTitle = new JTextField();
 
     private final JLabel labelDescription = new JLabel( "Description" );
-    private final JTextField textDescription = new JTextField();
+    private final JTextArea textDescription = new JTextArea( 5, 20 );
 
     private GLIssueVirtualFile virtualFile;
 
@@ -43,6 +43,9 @@ public class GLIssueEditorView extends JPanel implements EditableView<GitlabIssu
     }
 
     private void setupComponents() {
+        textDescription.setWrapStyleWord( true );
+        textDescription.setLineWrap( true );
+
         buttonSave.addActionListener( new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -63,15 +66,17 @@ public class GLIssueEditorView extends JPanel implements EditableView<GitlabIssu
     }
 
     private void setupLayout() {
+        JScrollPane dp = new JScrollPane( textDescription, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER );
+
         JPanel fieldsPanel = new JPanel( new TableLayout(
                 new double[] { TableLayout.MINIMUM, TableLayout.FILL },
-                new double[] { TableLayout.MINIMUM, TableLayout.MINIMUM }
+                new double[] { TableLayout.MINIMUM, TableLayout.FILL }
         ) );
         fieldsPanel.add( labelTitle, new TableLayoutConstraints( 0, 0, 0, 0 ) );
         fieldsPanel.add( textTitle, new TableLayoutConstraints( 1, 0, 1, 0, TableLayout.FULL, TableLayout.CENTER ) );
 
         fieldsPanel.add( labelDescription, new TableLayoutConstraints( 0, 1, 0, 1 ) );
-        fieldsPanel.add( textDescription, new TableLayoutConstraints( 1, 1, 1, 1, TableLayout.FULL, TableLayout.CENTER ) );
+        fieldsPanel.add( dp, new TableLayoutConstraints( 1, 1, 1, 1, TableLayout.FULL, TableLayout.FULL ) );
 
         JPanel panelBottom = new JPanel( new TableLayout(
                 new double[] { TableLayout.MINIMUM, TableLayout.MINIMUM },
