@@ -1,26 +1,25 @@
 package com.neon.intellij.plugins.gitlab.view.issues;
 
+import com.intellij.icons.AllIcons;
 import com.intellij.openapi.diagnostic.Logger;
 import com.neon.intellij.plugins.gitlab.controller.editor.GLIssueVirtualFile;
 import com.neon.intellij.plugins.gitlab.model.EditableView;
 import info.clearthought.layout.TableLayout;
 import info.clearthought.layout.TableLayoutConstraints;
+import org.gitlab.api.models.GitlabIssue;
+import org.jetbrains.annotations.NotNull;
+
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import org.gitlab.api.models.GitlabIssue;
-import org.jetbrains.annotations.NotNull;
 
 public class GLIssueEditorView extends JPanel implements EditableView<GitlabIssue, GitlabIssue> {
 
     private static final Logger LOG = Logger.getInstance("gitlab");
 
-    private final JButton buttonSave = new JButton( "save" );
-    private final JButton buttonClose = new JButton( "close" );
+    private final JButton buttonSave = new JButton( "save", AllIcons.Actions.Menu_saveall );
+    private final JButton buttonClose = new JButton( "close", AllIcons.Actions.Close );
 
     private final JLabel labelTitle = new JLabel( "Title" );
     private final JTextField textTitle = new JTextField();

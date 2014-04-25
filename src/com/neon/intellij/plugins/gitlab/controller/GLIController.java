@@ -9,17 +9,15 @@ import com.neon.intellij.plugins.gitlab.controller.editor.GLIssueVirtualFile;
 import com.neon.intellij.plugins.gitlab.model.gitlab.GLIssueState;
 import com.neon.intellij.plugins.gitlab.model.intellij.ConfigurableState;
 import com.neon.intellij.plugins.gitlab.view.GitLabView;
-import java.io.IOException;
-import java.util.List;
 import org.gitlab.api.models.GitlabIssue;
 import org.gitlab.api.models.GitlabProject;
+
+import java.io.IOException;
+import java.util.List;
 
 public class GLIController {
 
     private static final Logger LOG = Logger.getInstance( "gitlab" );
-
-    public static final String GITLAB_HOST_KEY = "com.neon.intellij.plugins.gitlab.host";
-    public static final String GITLAB_API_KEY = "com.neon.intellij.plugins.gitlab.api";
 
     private final Project project;
 
@@ -89,9 +87,14 @@ public class GLIController {
         return issue;
     }
 
+    public void refresh() {
+        String[] properties = getConnectionProperties();
+        glFacade.reload( properties[0], properties[1] );
+    }
 
-    public String[] getConnectionProperties() {
+    private String[] getConnectionProperties() {
         ConfigurableState state = ConfigurableState.getInstance();
+        LOG.info( "getConnectionProperties() : host=" + state.getHost() + ", token=" + state.getToken() );
         return new String[] { state.host, state.token };
     }
 

@@ -1,5 +1,6 @@
 package com.neon.intellij.plugins.gitlab.view;
 
+import com.intellij.icons.AllIcons;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.progress.ProgressManager;
@@ -8,13 +9,14 @@ import com.neon.intellij.plugins.gitlab.controller.GLIController;
 import com.neon.intellij.plugins.gitlab.view.issues.GLIssueListView;
 import info.clearthought.layout.TableLayout;
 import info.clearthought.layout.TableLayoutConstraints;
-import java.io.IOException;
-import java.util.List;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 import org.gitlab.api.models.GitlabProject;
 import org.jetbrains.annotations.NotNull;
+
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.util.List;
 
 public class GitLabView extends JPanel {
 
@@ -67,12 +69,22 @@ public class GitLabView extends JPanel {
     }
 
     private void setupLayout() {
+        final JButton buttonRefresh = new JButton( AllIcons.Actions.Refresh );
+        buttonRefresh.setToolTipText( "Refresh connection settings and projects list" );
+        buttonRefresh.addActionListener( new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controller.refresh();
+                refreshProjects();
+            }
+        });
+
         this.setLayout( new TableLayout(
                 new double[] { TableLayout.FILL },
                 new double[] { TableLayout.MINIMUM, TableLayout.FILL }
         ) );
 
-        this.add( new JLabel( "options" ), new TableLayoutConstraints( 0, 0, 0, 0, TableLayout.RIGHT, TableLayout.CENTER ) );
+        this.add( buttonRefresh, new TableLayoutConstraints( 0, 0, 0, 0, TableLayout.RIGHT, TableLayout.CENTER ) );
         this.add( glIssueListView, new TableLayoutConstraints( 0, 1, 0, 1, TableLayout.FULL, TableLayout.FULL ) );
     }
 

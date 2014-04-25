@@ -1,23 +1,22 @@
 package com.neon.intellij.plugins.gitlab.view.issues;
 
+import com.intellij.icons.AllIcons;
 import com.intellij.openapi.diagnostic.Logger;
 import com.neon.intellij.plugins.gitlab.controller.GLIController;
 import com.neon.intellij.plugins.gitlab.model.gitlab.GLIssueState;
+import org.gitlab.api.models.GitlabIssue;
+
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
-import javax.swing.JRadioButtonMenuItem;
-import org.gitlab.api.models.GitlabIssue;
 
 public class GLIssuePopup extends JPopupMenu {
 
     private static final Logger LOG = Logger.getInstance("gitlab");
 
     public GLIssuePopup( final GLIController controller, final GitlabIssue issue ) {
-        JMenuItem editItem = new JMenuItem( "Edit" );
+        JMenuItem editItem = new JMenuItem( "Edit", AllIcons.Actions.Edit );
         editItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -26,7 +25,7 @@ public class GLIssuePopup extends JPopupMenu {
         });
         this.add(editItem);
 
-        JMenuItem delete = new JMenuItem( "Delete" );
+        JMenuItem delete = new JMenuItem( "Delete", AllIcons.Actions.Delete );
         delete.addActionListener( new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -40,12 +39,12 @@ public class GLIssuePopup extends JPopupMenu {
         });
         this.add( delete );
 
-        JMenu statesMenu = new JMenu( "State" );
+        JMenu statesMenu = new JMenu( "Change State To ..." );
 
         GLIssueState issueState = GLIssueState.fromValue(issue.getState());
 
         if ( GLIssueState.CLOSED.equals( issueState ) ) {
-            JRadioButtonMenuItem reopen = new JRadioButtonMenuItem(GLIssueState.REOPEN.getLabel());
+            JRadioButtonMenuItem reopen = new JRadioButtonMenuItem(GLIssueState.REOPEN.getLabel(), AllIcons.Actions.Resume );
             reopen.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -59,7 +58,7 @@ public class GLIssuePopup extends JPopupMenu {
             });
             statesMenu.add(reopen);
         } else {
-            JRadioButtonMenuItem closed = new JRadioButtonMenuItem(GLIssueState.CLOSED.getLabel());
+            JRadioButtonMenuItem closed = new JRadioButtonMenuItem(GLIssueState.CLOSED.getLabel(), AllIcons.Actions.Close );
             closed.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {

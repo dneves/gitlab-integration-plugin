@@ -1,12 +1,13 @@
 package com.neon.intellij.plugins.gitlab.view.issues;
 
+import com.intellij.icons.AllIcons;
 import com.neon.intellij.plugins.gitlab.controller.GLIController;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
 import org.gitlab.api.models.GitlabIssue;
 import org.gitlab.api.models.GitlabProject;
+
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class GLProjectPopup extends JPopupMenu {
 
@@ -21,7 +22,7 @@ public class GLProjectPopup extends JPopupMenu {
 //        });
 //        this.add( refresh );
 
-        JMenuItem create = new JMenuItem( "New Issue" );
+        JMenuItem create = new JMenuItem( "New Issue", AllIcons.Actions.NewFolder );
         create.addActionListener( new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
