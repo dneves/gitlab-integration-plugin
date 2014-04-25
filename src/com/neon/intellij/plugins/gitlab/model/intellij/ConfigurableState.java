@@ -4,8 +4,6 @@ import com.intellij.openapi.components.PersistentStateComponent;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.components.State;
 import com.intellij.openapi.components.Storage;
-import com.intellij.openapi.components.StoragePathMacros;
-import com.intellij.openapi.components.StorageScheme;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.util.xmlb.XmlSerializerUtil;
 import com.intellij.util.xmlb.annotations.Transient;
@@ -14,8 +12,7 @@ import org.jetbrains.annotations.Nullable;
 @State(
         name = "ConfigurableState",
         storages = {
-                @Storage( id = "default", file = StoragePathMacros.PROJECT_FILE ),
-                @Storage( id = "dir", file = StoragePathMacros.PROJECT_CONFIG_DIR + "/ant.xml", scheme = StorageScheme.DIRECTORY_BASED )
+                @Storage( id = "default", file = "$APP_CONFIG$/gitlab-integration-settings.xml" )
         }
 )
 public class ConfigurableState implements PersistentStateComponent< ConfigurableState > {
@@ -32,6 +29,7 @@ public class ConfigurableState implements PersistentStateComponent< Configurable
 
     }
 
+
     public static ConfigurableState getInstance() {
         return ServiceManager.getService( ConfigurableState.class );
     }
@@ -39,13 +37,11 @@ public class ConfigurableState implements PersistentStateComponent< Configurable
     @Nullable
     @Override
     public ConfigurableState getState() {
-        LOG.info( "getState() : host=" + host + ", token=" + token );
         return this;
     }
 
     @Override
     public void loadState( ConfigurableState configurableState ) {
-        LOG.info( "loadState() : host=" + configurableState.host + ", token=" + configurableState.token );
         XmlSerializerUtil.copyBean( configurableState, this );
     }
 

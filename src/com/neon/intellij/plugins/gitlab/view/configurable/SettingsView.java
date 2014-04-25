@@ -4,9 +4,8 @@ import com.neon.intellij.plugins.gitlab.model.EditableView;
 import com.neon.intellij.plugins.gitlab.model.intellij.ConfigurableState;
 import info.clearthought.layout.TableLayout;
 import info.clearthought.layout.TableLayoutConstraints;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
+
+import javax.swing.*;
 
 public class SettingsView extends JPanel implements EditableView<ConfigurableState, String[] > {
 
@@ -33,8 +32,8 @@ public class SettingsView extends JPanel implements EditableView<ConfigurableSta
 
     @Override
     public void fill( ConfigurableState state ) {
-        textHost.setText( state.getHost() );
-        textAPI.setText( state.getToken() );
+        textHost.setText( state == null ? "" : state.getHost() );
+        textAPI.setText( state == null ? "" : state.getToken() );
     }
 
     @Override

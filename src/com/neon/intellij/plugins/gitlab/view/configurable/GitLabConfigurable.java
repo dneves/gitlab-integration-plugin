@@ -1,14 +1,16 @@
 package com.neon.intellij.plugins.gitlab.view.configurable;
 
 import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.options.Configurable;
 import com.intellij.openapi.options.ConfigurationException;
+import com.intellij.openapi.options.SearchableConfigurable;
 import com.neon.intellij.plugins.gitlab.model.intellij.ConfigurableState;
-import javax.swing.JComponent;
 import org.jetbrains.annotations.Nls;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class GitLabConfigurable implements Configurable {
+import javax.swing.*;
+
+public class GitLabConfigurable implements SearchableConfigurable {
 
     private static final Logger LOG = Logger.getInstance("gitlab");
 
@@ -36,7 +38,7 @@ public class GitLabConfigurable implements Configurable {
     @Override
     public JComponent createComponent() {
         view = new SettingsView();
-        view.fill( settings );
+        reset();
         return view;
     }
 
@@ -47,10 +49,8 @@ public class GitLabConfigurable implements Configurable {
      */
     public boolean isModified() {
         String[] save = view.save();
-        boolean res = save == null || ! settings.getHost().equals( save[0] ) ||
+        return save == null || ! settings.getHost().equals( save[0] ) ||
                 ! settings.getToken().equals( save[1] );
-        LOG.info( "isModified() : " + res );
-        return res;
     }
 
     /**
@@ -78,4 +78,15 @@ public class GitLabConfigurable implements Configurable {
         view = null;
     }
 
+    @NotNull
+    @Override
+    public String getId() {
+        return "com.neon.intellij.plugins.gitlab.configurable";
+    }
+
+    @Nullable
+    @Override
+    public Runnable enableSearch(String option) {
+        return null;
+    }
 }
