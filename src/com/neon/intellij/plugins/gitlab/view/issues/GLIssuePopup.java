@@ -15,7 +15,9 @@ public class GLIssuePopup extends JPopupMenu {
 
     private static final Logger LOG = Logger.getInstance("gitlab");
 
-    public GLIssuePopup( final GLIController controller, final GitlabIssue issue ) {
+    public GLIssuePopup( final GLIController controller, final GLIssueNode node ) {
+        final GitlabIssue issue = node.getUserObject();
+
         JMenuItem editItem = new JMenuItem( "Edit", AllIcons.Actions.Edit );
         editItem.addActionListener(new ActionListener() {
             @Override

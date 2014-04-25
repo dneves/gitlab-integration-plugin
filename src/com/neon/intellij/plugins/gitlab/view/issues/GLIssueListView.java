@@ -3,26 +3,30 @@ package com.neon.intellij.plugins.gitlab.view.issues;
 import com.intellij.ui.components.JBScrollPane;
 import com.intellij.ui.treeStructure.Tree;
 import com.neon.intellij.plugins.gitlab.controller.GLIController;
-import com.neon.intellij.plugins.gitlab.model.GLRootIssue;
 import info.clearthought.layout.TableLayout;
 import info.clearthought.layout.TableLayoutConstraints;
-import java.util.List;
-import javax.swing.JPanel;
+import org.gitlab.api.models.GitlabIssue;
+import org.gitlab.api.models.GitlabNamespace;
+import org.gitlab.api.models.GitlabProject;
+
+import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
-import org.gitlab.api.models.GitlabIssue;
-import org.gitlab.api.models.GitlabProject;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class GLIssueListView extends JPanel {
 
-    private final GLRootIssue root = new GLRootIssue();
+    private static final Integer DEAFAULT_NAMESPACE_ID = -1;
 
-    private final Tree tree = new Tree( root );
+    private final Tree tree = new Tree( new DefaultMutableTreeNode( "namespaces" ) );
 
 
     public GLIssueListView( final GLIController controller ) {
         tree.setCellRenderer( new GLIssueListRenderer() );
         tree.addMouseListener( new GLIssueListMouseAdapter( controller, this, tree ) );
+//        tree.setRootVisible( false );
 
         this.setLayout( new TableLayout(
                 new double[] { TableLayout.FILL },
@@ -34,21 +38,38 @@ public class GLIssueListView extends JPanel {
     }
 
     public void addProjects( List<GitlabProject> projects ) {
-        root.removeAllChildren();
+        DefaultMutableTreeNode root = (DefaultMutableTreeNode) tree.getModel().getRoot();
 
+        root.removeAllChildren();
         if ( projects == null ) {
             return ;
         }
 
+        Map< Integer, GLNamespaceNode > namespaceNodes = new HashMap<>();
+
         for ( GitlabProject project : projects ) {
-            root.add( new DefaultMutableTreeNode( project, true ) );
+            GLNamespaceNode rootNodeFor = getRootNodeFor( project, root, namespaceNodes );
+            rootNodeFor.add(new GLProjectNode(project));
         }
 
         tree.treeDidChange();
         tree.expandPath( new TreePath( root.getPath() ) );
     }
 
-    public void addIssues( final List<GitlabIssue> issues, final DefaultMutableTreeNode projectNode ) {
+    private GLNamespaceNode getRootNodeFor( GitlabProject project, final DefaultMutableTreeNode root, final Map< Integer, GLNamespaceNode > namespaces ) {
+        GitlabNamespace namespace = project.getNamespace();
+        Integer namespaceId = namespace == null ? DEAFAULT_NAMESPACE_ID : namespace.getId();
+
+        GLNamespaceNode rootNode = namespaces.get( namespaceId );
+        if ( rootNode == null ) {
+            rootNode = new GLNamespaceNode(namespace);
+            namespaces.put( namespaceId, rootNode );
+            root.add( rootNode );
+        }
+        return rootNode;
+    }
+
+    public void addIssues( final List<GitlabIssue> issues, final GLProjectNode projectNode ) {
         projectNode.removeAllChildren();
 
         if ( issues == null ) {
@@ -56,7 +77,7 @@ public class GLIssueListView extends JPanel {
         }
 
         for ( GitlabIssue issue : issues ) {
-            projectNode.add( new DefaultMutableTreeNode( issue, false ) );
+            projectNode.add( new GLIssueNode( issue ) );
         }
 
         tree.treeDidChange();

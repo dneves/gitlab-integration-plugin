@@ -11,7 +11,8 @@ import java.awt.event.ActionListener;
 
 public class GLProjectPopup extends JPopupMenu {
 
-    public GLProjectPopup( final GLIController controller, final GitlabProject project ) {
+    public GLProjectPopup( final GLIController controller, final GLProjectNode node ) {
+        final GitlabProject project = node.getUserObject();
 
 //        JMenuItem refresh = new JMenuItem( "Refresh" );
 //        refresh.addActionListener( new ActionListener() {

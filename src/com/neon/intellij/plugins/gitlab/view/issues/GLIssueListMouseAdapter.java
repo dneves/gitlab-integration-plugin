@@ -5,18 +5,16 @@ import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.progress.ProgressManager;
 import com.intellij.openapi.progress.Task;
 import com.neon.intellij.plugins.gitlab.controller.GLIController;
+import org.gitlab.api.models.GitlabIssue;
+import org.jetbrains.annotations.NotNull;
+
+import javax.swing.*;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreePath;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.util.List;
-import javax.swing.JPopupMenu;
-import javax.swing.JTree;
-import javax.swing.SwingUtilities;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreePath;
-import org.gitlab.api.models.GitlabIssue;
-import org.gitlab.api.models.GitlabProject;
-import org.jetbrains.annotations.NotNull;
 
 public class GLIssueListMouseAdapter extends MouseAdapter {
 
@@ -47,28 +45,28 @@ public class GLIssueListMouseAdapter extends MouseAdapter {
     }
 
     private void contextMenu( final DefaultMutableTreeNode node, final int x, final int y ) {
-        Object userObject = node.getUserObject();
-        if ( userObject instanceof GitlabProject) {
-            final GitlabProject project = ( GitlabProject ) userObject;
+        if ( node instanceof GLProjectNode ) {
+            GLProjectNode projectNode = (GLProjectNode) node;
 
-            JPopupMenu popup = new GLProjectPopup( controller, project );
+            JPopupMenu popup = new GLProjectPopup( controller, projectNode );
             popup.show( tree, x, y );
 
-        } else if ( userObject instanceof GitlabIssue) {
-            final GitlabIssue issue = ( GitlabIssue ) userObject;
+        } else if ( node instanceof GLIssueNode ) {
+            GLIssueNode issueNode = (GLIssueNode) node;
 
-            JPopupMenu popup = new GLIssuePopup( controller, issue );
+            JPopupMenu popup = new GLIssuePopup( controller, issueNode );
             popup.show( tree, x, y );
 
         }
     }
 
     private void doubleClick( final DefaultMutableTreeNode node ) {
-        final Object userObject = node.getUserObject();
-        if ( userObject instanceof GitlabProject ) {
+        if ( node instanceof GLProjectNode ) {
             if ( node.getChildCount() > 0 ) {
                 return ;
             }
+
+            final GLProjectNode projectNode = (GLProjectNode) node;
 
             ProgressManager.getInstance().run( new Task.Backgroundable( controller.getProject(), "Get project issues" ) {
                 @Override
@@ -77,7 +75,7 @@ public class GLIssueListMouseAdapter extends MouseAdapter {
                     progressIndicator.setText( "Getting remote issues" );
 
                     try {
-                        final List<GitlabIssue> issues = controller.getIssues((GitlabProject) userObject);
+                        final List<GitlabIssue> issues = controller.getIssues( projectNode.getUserObject() );
 
                         progressIndicator.setFraction( 0.5 );
                         progressIndicator.setText( "Got remote issues" );
@@ -85,7 +83,7 @@ public class GLIssueListMouseAdapter extends MouseAdapter {
                         SwingUtilities.invokeLater( new Runnable() {
                             @Override
                             public void run() {
-                                taskList.addIssues( issues, node );
+                                taskList.addIssues( issues, projectNode );
                             }
                         });
 
@@ -97,10 +95,9 @@ public class GLIssueListMouseAdapter extends MouseAdapter {
                 }
             } );
 
-        } else if ( userObject instanceof GitlabIssue ) {
-
-            controller.openEditor( ( GitlabIssue ) userObject );
-
+        } else if ( node instanceof GLIssueNode ) {
+            GLIssueNode issueNode = (GLIssueNode) node;
+            controller.openEditor( issueNode.getUserObject() );
         }
     }
 

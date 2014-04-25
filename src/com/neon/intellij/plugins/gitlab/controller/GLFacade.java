@@ -1,12 +1,14 @@
 package com.neon.intellij.plugins.gitlab.controller;
 
+import org.gitlab.api.GitlabAPI;
+import org.gitlab.api.models.GitlabIssue;
+import org.gitlab.api.models.GitlabNamespace;
+import org.gitlab.api.models.GitlabProject;
+
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import org.gitlab.api.GitlabAPI;
-import org.gitlab.api.models.GitlabIssue;
-import org.gitlab.api.models.GitlabProject;
 
 public class GLFacade {
 
@@ -38,7 +40,13 @@ public class GLFacade {
         Collections.sort( projects, new Comparator< GitlabProject >() {
             @Override
             public int compare( GitlabProject o1, GitlabProject o2 ) {
-                return o1.getName().compareTo( o2.getName() );
+                GitlabNamespace namespace1 = o1.getNamespace();
+                String n1 = namespace1 != null ? namespace1.getName().toLowerCase() : "Default";
+                GitlabNamespace namespace2 = o2.getNamespace();
+                String n2 = namespace2 != null ? namespace2.getName().toLowerCase() : "Default";
+
+                int compareNamespace = n1.compareTo(n2);
+                return compareNamespace != 0 ? compareNamespace : o1.getName().toLowerCase().compareTo(o2.getName().toLowerCase());
             }
         } );
         return projects;
