@@ -33,12 +33,13 @@ public class GLEditorProvider implements ApplicationComponent, FileEditorProvide
         if ( virtualFile instanceof GLIssueVirtualFile) {
             result = new GLIssueEditor( (GLIssueVirtualFile) virtualFile );
         }
+        // TODO : resolv other kinds of 'files'
         return result;
     }
 
     @Override
     public void disposeEditor(@NotNull FileEditor fileEditor) {
-        ( (GLIssueEditor) fileEditor ).dispose();
+        fileEditor.dispose();
     }
 
     @NotNull

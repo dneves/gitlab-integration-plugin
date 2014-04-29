@@ -1,17 +1,37 @@
 <idea-plugin version="2">
   <id>com.neon.intellij.plugins.gitlab</id>
   <name>GitLab Integration Plugin</name>
-  <version>1.0</version>
+  <version>1.0.1</version>
   <vendor email="diogo.sousa.neves@gmail.com" url="">Diogo Neves</vendor>
 
   <description><![CDATA[
-    GitLab Integration plugin, <br>
-    will be able to work with projects and their issues
+    GitLab Integration plugin:<br>
+    <br>
+    Lets you interact with gitlab from within your IDE.<br>
+    <br>
+    Features:<br>
+    <ul>
+        <li>List projects (by namespaces) and their issues</li>
+        <li>Re-open / close issues (right click)</li>
+        <li>Edit issues (double click)</li>
+    </ul>
+    <br>
+    Please, leave a comment or drop me an email with any issues/reports.<br>
+    <br>
+    (not sure if plugin works with java6 - feedback welcome)<br>
+    
     ]]></description>
 
   <change-notes><![CDATA[
-    Plugin creation<br>
-    change notes here
+    ( 2014-04-29 ) <b>v1.0.1</b><br>
+    <ul>
+        <li>Improves in the issue editing view</li>
+    </ul>
+    <br>
+    ( 2014-04-25 ) <b>v1.0</b><br>
+    <ul>
+        <li>Plugin creation</li>
+    </ul>
     ]]>
   </change-notes>
 
@@ -20,9 +40,7 @@
 
   <!-- please see http://confluence.jetbrains.com/display/IDEADEV/Plugin+Compatibility+with+IntelliJ+Platform+Products
        on how to target different products -->
-  <!-- uncomment to enable plugin in all products
   <depends>com.intellij.modules.lang</depends>
-  -->
 
   <extensions defaultExtensionNs="com.intellij">
     <!-- Add your extensions here -->

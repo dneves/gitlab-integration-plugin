@@ -45,7 +45,7 @@ public class GLIssueListView extends JPanel {
             return ;
         }
 
-        Map< Integer, GLNamespaceNode > namespaceNodes = new HashMap<>();
+        Map< Integer, GLNamespaceNode > namespaceNodes = new HashMap<Integer, GLNamespaceNode>();
 
         for ( GitlabProject project : projects ) {
             GLNamespaceNode rootNodeFor = getRootNodeFor( project, root, namespaceNodes );

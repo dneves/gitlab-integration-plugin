@@ -68,29 +68,37 @@ public class GLIssueEditorView extends JPanel implements EditableView<GitlabIssu
     private void setupLayout() {
         JScrollPane dp = new JScrollPane( textDescription, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER );
 
-        JPanel fieldsPanel = new JPanel( new TableLayout(
-                new double[] { TableLayout.MINIMUM, TableLayout.FILL },
-                new double[] { TableLayout.MINIMUM, TableLayout.FILL }
-        ) );
+        TableLayout layoutFields = new TableLayout(
+                new double[]{TableLayout.MINIMUM, TableLayout.FILL},
+                new double[]{TableLayout.MINIMUM, TableLayout.FILL}
+        );
+        layoutFields.setHGap( 5 );
+        layoutFields.setVGap( 5 );
+        JPanel fieldsPanel = new JPanel( layoutFields );
         fieldsPanel.add( labelTitle, new TableLayoutConstraints( 0, 0, 0, 0 ) );
-        fieldsPanel.add( textTitle, new TableLayoutConstraints( 1, 0, 1, 0, TableLayout.FULL, TableLayout.CENTER ) );
+        fieldsPanel.add( textTitle, new TableLayoutConstraints( 1, 0, 1, 0 ) );
 
-        fieldsPanel.add( labelDescription, new TableLayoutConstraints( 0, 1, 0, 1 ) );
-        fieldsPanel.add( dp, new TableLayoutConstraints( 1, 1, 1, 1, TableLayout.FULL, TableLayout.FULL ) );
+        fieldsPanel.add( labelDescription, new TableLayoutConstraints( 0, 1, 0, 1, TableLayout.LEFT, TableLayout.TOP ) );
+        fieldsPanel.add( dp, new TableLayoutConstraints( 1, 1, 1, 1 ) );
 
-        JPanel panelBottom = new JPanel( new TableLayout(
-                new double[] { TableLayout.MINIMUM, TableLayout.MINIMUM },
-                new double[] { TableLayout.MINIMUM }
-        ) );
+        TableLayout layoutButtons = new TableLayout(
+                new double[]{TableLayout.MINIMUM, TableLayout.MINIMUM},
+                new double[]{TableLayout.MINIMUM}
+        );
+        layoutButtons.setHGap( 5 );
+        JPanel panelBottom = new JPanel( layoutButtons );
         panelBottom.add( buttonSave, new TableLayoutConstraints( 0, 0, 0, 0 ) );
         panelBottom.add( buttonClose, new TableLayoutConstraints( 1, 0, 1, 0 ) );
 
 
-        this.setLayout(new TableLayout(
-                new double[] { TableLayout.FILL },
-                new double[] { TableLayout.FILL, TableLayout.MINIMUM }
-        ));
-        this.add( fieldsPanel, new TableLayoutConstraints(0, 0, 0, 0, TableLayout.LEFT, TableLayout.TOP) );
+        TableLayout layout = new TableLayout(
+                new double[]{TableLayout.FILL},
+                new double[]{TableLayout.FILL, TableLayout.MINIMUM}
+        );
+        layout.setHGap( 5 );
+        layout.setVGap( 5 );
+        this.setLayout( layout );
+        this.add( fieldsPanel, new TableLayoutConstraints(0, 0, 0, 0 ) );
         this.add( panelBottom, new TableLayoutConstraints(0, 1, 0, 1, TableLayout.CENTER, TableLayout.CENTER) );
     }
 
