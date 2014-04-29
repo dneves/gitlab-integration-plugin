@@ -18,11 +18,14 @@
     <br>
     Please, leave a comment or drop me an email with any issues/reports.<br>
     <br>
-    (not sure if plugin works with java6 - feedback welcome)<br>
-
+    Note: you need to run your IDE with java7 (java6 is not supported due to lack of SNI support) - if you know how to set plugin dependency on java7, please tell me. Thanks.<br>
     ]]></description>
 
   <change-notes><![CDATA[
+    ( 2014-04-29 ) <b>v1.0.2</b><br>
+    <ul>
+        <li>Set plugin dependency to build 133 (IntelliJ IDEA 13, PyCharm 3.1, WebStorm 7, PhpStorm 7) - intellij 13 was the first to support java7</li>
+    </ul>
     ( 2014-04-29 ) <b>v1.0.1</b><br>
     <ul>
         <li>Improves in the issue editing view</li>
@@ -35,7 +38,7 @@
   </change-notes>
 
   <!-- please see http://confluence.jetbrains.com/display/IDEADEV/Build+Number+Ranges for description -->
-  <idea-version since-build="131"/>
+  <idea-version since-build="133"/>
 
   <!-- please see http://confluence.jetbrains.com/display/IDEADEV/Plugin+Compatibility+with+IntelliJ+Platform+Products
        on how to target different products -->
