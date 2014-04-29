@@ -19,7 +19,7 @@
     Please, leave a comment or drop me an email with any issues/reports.<br>
     <br>
     (not sure if plugin works with java6 - feedback welcome)<br>
-    
+
     ]]></description>
 
   <change-notes><![CDATA[
@@ -27,7 +27,6 @@
     <ul>
         <li>Improves in the issue editing view</li>
     </ul>
-    <br>
     ( 2014-04-25 ) <b>v1.0</b><br>
     <ul>
         <li>Plugin creation</li>
