@@ -1,6 +1,5 @@
 package com.neon.intellij.plugins.gitlab.view.configurable;
 
-import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.options.SearchableConfigurable;
 import com.neon.intellij.plugins.gitlab.model.intellij.ConfigurableState;
@@ -12,15 +11,13 @@ import javax.swing.*;
 
 public class GitLabConfigurable implements SearchableConfigurable {
 
-    private static final Logger LOG = Logger.getInstance("gitlab");
-
-    private ConfigurableState settings;
+    private final ConfigurableState settings = ConfigurableState.getInstance();
 
     private SettingsView view;
 
 
     public GitLabConfigurable( ) {
-        settings = ConfigurableState.getInstance();
+
     }
 
     @Nls
