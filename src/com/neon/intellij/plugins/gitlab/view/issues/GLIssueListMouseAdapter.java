@@ -35,7 +35,8 @@ public class GLIssueListMouseAdapter extends MouseAdapter {
     @Override
     public void mouseClicked( MouseEvent e ) {
         final TreePath path = tree.getSelectionPath();
-        DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
+        // null path means nothing selected - we dont care
+        DefaultMutableTreeNode node = path == null ? null : (DefaultMutableTreeNode) path.getLastPathComponent();
 
         if ( SwingUtilities.isRightMouseButton( e ) ) {
             contextMenu( node, e.getX(), e.getY() );
