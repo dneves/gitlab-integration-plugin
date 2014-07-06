@@ -1,9 +1,10 @@
-package com.neon.intellij.plugins.gitlab.view.issues;
+package com.neon.intellij.plugins.gitlab.view.toolwindow;
 
 import com.intellij.icons.AllIcons;
 import com.intellij.openapi.diagnostic.Logger;
 import com.neon.intellij.plugins.gitlab.controller.GLIController;
 import com.neon.intellij.plugins.gitlab.model.gitlab.GLIssueState;
+import com.neon.intellij.plugins.gitlab.model.intellij.GLIssueNode;
 import org.gitlab.api.models.GitlabIssue;
 
 import javax.swing.*;

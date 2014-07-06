@@ -14,6 +14,7 @@ import org.gitlab.api.models.GitlabProject;
 
 import java.io.IOException;
 import java.util.List;
+import org.gitlab.api.models.GitlabUser;
 
 public class GLIController {
 
@@ -56,6 +57,24 @@ public class GLIController {
 
     public List<GitlabIssue > getIssues( final GitlabProject project ) throws IOException {
         return glFacade.getIssues( project );
+    }
+
+    public List<GitlabUser> getUsers() throws IOException {
+        return glFacade.getUsers();
+    }
+
+    public static String getLabel( final GitlabUser user ) {
+        String result = null;
+        if ( user != null ) {
+            result = user.getName();
+            if (result == null || result.trim().isEmpty()) {
+                result = user.getEmail();
+            }
+            if (result == null || result.trim().isEmpty()) {
+                result = user.getUsername();
+            }
+        }
+        return result != null ? result : "";
     }
 
     public void openEditor( final GitlabIssue issue ) {

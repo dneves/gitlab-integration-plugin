@@ -1,4 +1,4 @@
-package com.neon.intellij.plugins.gitlab.view.issues;
+package com.neon.intellij.plugins.gitlab.model.intellij;
 
 import com.neon.intellij.plugins.gitlab.model.GLTreeNode;
 import org.gitlab.api.models.GitlabIssue;

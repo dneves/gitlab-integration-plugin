@@ -1,5 +1,8 @@
-package com.neon.intellij.plugins.gitlab.view.issues;
+package com.neon.intellij.plugins.gitlab.view.toolwindow;
 
+import com.neon.intellij.plugins.gitlab.model.intellij.GLIssueNode;
+import com.neon.intellij.plugins.gitlab.model.intellij.GLNamespaceNode;
+import com.neon.intellij.plugins.gitlab.model.intellij.GLProjectNode;
 import org.gitlab.api.models.GitlabIssue;
 import org.gitlab.api.models.GitlabNamespace;
 import org.gitlab.api.models.GitlabProject;
@@ -20,8 +23,8 @@ public class GLIssueListRenderer implements TreeCellRenderer {
         StringBuilder sb = new StringBuilder();
         DefaultMutableTreeNode node = ( DefaultMutableTreeNode ) value;
 
-        int childCount = node.getChildCount();
-        if ( node instanceof GLNamespaceNode ) {
+        int childCount = tree.getModel().getChildCount(node);
+        if ( node instanceof GLNamespaceNode) {
             GLNamespaceNode namespaceNode = (GLNamespaceNode) node;
             GitlabNamespace namespace = namespaceNode.getUserObject();
 
@@ -37,7 +40,7 @@ public class GLIssueListRenderer implements TreeCellRenderer {
                 sb.append( " ( " ).append(childCount).append( " )" );
             }
 
-        } else if ( node instanceof GLProjectNode ) {
+        } else if ( node instanceof GLProjectNode) {
             GLProjectNode projectNode = (GLProjectNode) node;
             GitlabProject project = projectNode.getUserObject();
 
@@ -49,7 +52,7 @@ public class GLIssueListRenderer implements TreeCellRenderer {
                 sb.append( " ( " ).append(childCount).append( " )" );
             }
 
-        } else if ( node instanceof GLIssueNode ) {
+        } else if ( node instanceof GLIssueNode) {
             GLIssueNode issueNode = (GLIssueNode) node;
             GitlabIssue issue = issueNode.getUserObject();
 

@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import org.gitlab.api.models.GitlabUser;
 
 public class GLFacade {
 
@@ -64,6 +65,21 @@ public class GLFacade {
             }
         } );
         return issues;
+    }
+
+    public List< GitlabUser > getUsers() throws IOException {
+        checkApi();
+
+        List<GitlabUser> users = api.getUsers();
+        Collections.sort( users, new Comparator<GitlabUser>() {
+            @Override
+            public int compare(GitlabUser user1, GitlabUser user2) {
+                String label1 = GLIController.getLabel( user1 );
+                String label2 = GLIController.getLabel( user2 );
+                return label1.compareTo( label2 );
+            }
+        });
+        return users;
     }
 
     public GitlabIssue createIssue(final GitlabIssue issue) throws IOException {
