@@ -1,7 +1,7 @@
 <idea-plugin version="2">
   <id>com.neon.intellij.plugins.gitlab</id>
   <name>GitLab Integration Plugin</name>
-  <version>1.0.2</version>
+  <version>1.0.3</version>
   <vendor email="diogo.sousa.neves@gmail.com" url="">Diogo Neves</vendor>
 
   <description><![CDATA[
@@ -18,10 +18,18 @@
     <br>
     Please, leave a comment or drop me an email with any issues/reports.<br>
     <br>
-    Note: you need to run your IDE with java7 (java6 is not supported due to lack of SNI support) - if you know how to set plugin dependency on java7, please tell me. Thanks.<br>
+    Note: this plugin requires intellij to be started with Java7.<br>
+    <br>
+    After plugin install, go to IDE preferences, and look for Gitlab Integration.<br>
+    You'll need the host and your API key from your gitlab (which you can find under Profile Settings -> Account)<br>
     ]]></description>
 
   <change-notes><![CDATA[
+    ( 2014-06-23 ) <b>v1.0.3</b><br>
+    <ul>
+        <li>Issues list filter</li>
+        <li>minor improvements</li>
+    </ul>
     ( 2014-04-29 ) <b>v1.0.2</b><br>
     <ul>
         <li>Set plugin dependency to build 133 (IntelliJ IDEA 13, PyCharm 3.1, WebStorm 7, PhpStorm 7) - intellij 13 was the first to support java7</li>
