@@ -24,7 +24,7 @@ public class ConfigurableState implements PersistentStateComponent< Configurable
 
     public String token;
 
-    public Boolean ignoreCertificateErrors = false;
+    public Boolean ignoreCertificateErrors = true;
 
 
     public ConfigurableState() {

@@ -4,6 +4,7 @@ import com.neon.intellij.plugins.gitlab.model.EditableView;
 import com.neon.intellij.plugins.gitlab.model.intellij.ConfigurableState;
 import info.clearthought.layout.TableLayout;
 import info.clearthought.layout.TableLayoutConstraints;
+
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -17,7 +18,7 @@ public class SettingsView extends JPanel implements EditableView<ConfigurableSta
     private final JLabel labelAPI = new JLabel( "GitLab API Key" );
     private final JTextField textAPI = new JTextField();
 
-    private final JCheckBox checkIgnoreCertificateErrors = new JCheckBox( "Ignore Certificate Errors" );
+    private final JCheckBox checkIgnoreCertificateErrors = new JCheckBox( "Ignore Certificate Errors", true );
 
     public SettingsView( ) {
         setupLayout();
@@ -41,7 +42,7 @@ public class SettingsView extends JPanel implements EditableView<ConfigurableSta
     public void fill( ConfigurableState state ) {
         textHost.setText( state == null ? "" : state.getHost() );
         textAPI.setText( state == null ? "" : state.getToken() );
-        checkIgnoreCertificateErrors.setSelected( state == null ? false : state.getIgnoreCertificateErrors() );
+        checkIgnoreCertificateErrors.setSelected( state == null ? true : state.getIgnoreCertificateErrors() );
     }
 
     @Override

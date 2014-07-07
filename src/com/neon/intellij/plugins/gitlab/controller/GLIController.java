@@ -9,11 +9,12 @@ import com.neon.intellij.plugins.gitlab.controller.editor.GLIssueVirtualFile;
 import com.neon.intellij.plugins.gitlab.model.gitlab.GLIssueState;
 import com.neon.intellij.plugins.gitlab.model.intellij.ConfigurableState;
 import com.neon.intellij.plugins.gitlab.view.GitLabView;
-import java.io.IOException;
-import java.util.List;
 import org.gitlab.api.models.GitlabIssue;
 import org.gitlab.api.models.GitlabProject;
 import org.gitlab.api.models.GitlabUser;
+
+import java.io.IOException;
+import java.util.List;
 
 public class GLIController {
 
@@ -113,7 +114,6 @@ public class GLIController {
 
     private Object[] getConnectionProperties() {
         ConfigurableState state = ConfigurableState.getInstance();
-        LOG.info( "getConnectionProperties() : host=" + state.getHost() + ", token=" + state.getToken() );
         return new Object[] { state.host, state.token, state.ignoreCertificateErrors };
     }
 

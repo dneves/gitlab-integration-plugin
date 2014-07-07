@@ -20,6 +20,10 @@ You'll need the host and your API key from your gitlab (which you can find under
 
 ## Change notes
 
+( 2014-07-08 ) <b>v1.0.5</b><br>
+<ul>
+    <li>Fixed possible ssl error (ignoring certificate errors by default)</li>
+</ul>
 ( 2014-07-07 ) <b>v1.0.4</b><br>
 <ul>
     <li>bug fixes</li>
