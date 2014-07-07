@@ -24,6 +24,8 @@ public class ConfigurableState implements PersistentStateComponent< Configurable
 
     public String token;
 
+    public Boolean ignoreCertificateErrors = false;
+
 
     public ConfigurableState() {
 
@@ -59,5 +61,13 @@ public class ConfigurableState implements PersistentStateComponent< Configurable
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public Boolean getIgnoreCertificateErrors() {
+        return ignoreCertificateErrors;
+    }
+
+    public void setIgnoreCertificateErrors(Boolean ignoreCertificateErrors) {
+        this.ignoreCertificateErrors = ignoreCertificateErrors;
     }
 }

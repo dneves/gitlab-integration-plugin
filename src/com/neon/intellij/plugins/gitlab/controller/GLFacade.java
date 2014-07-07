@@ -1,28 +1,27 @@
 package com.neon.intellij.plugins.gitlab.controller;
 
-import org.gitlab.api.GitlabAPI;
-import org.gitlab.api.models.GitlabIssue;
-import org.gitlab.api.models.GitlabNamespace;
-import org.gitlab.api.models.GitlabProject;
-
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import org.gitlab.api.GitlabAPI;
+import org.gitlab.api.models.GitlabIssue;
+import org.gitlab.api.models.GitlabNamespace;
+import org.gitlab.api.models.GitlabProject;
 import org.gitlab.api.models.GitlabUser;
 
 public class GLFacade {
 
     private GitlabAPI api;
 
-    public GLFacade( final String gitlabHost, final String gitlabApiToken ) {
-        reload( gitlabHost, gitlabApiToken );
+    public GLFacade( final String gitlabHost, final String gitlabApiToken, final Boolean ignoreCertificateErrors ) {
+        reload( gitlabHost, gitlabApiToken, ignoreCertificateErrors );
     }
 
-    public boolean reload( final String host, final String token ) {
+    public boolean reload( final String host, final String token, final Boolean ignoreCertificateErrors ) {
         if ( host != null && token != null && ! host.isEmpty() && ! token.isEmpty() ) {
             api = GitlabAPI.connect(host, token);
-//            api.ignoreCertificateErrors(true);
+            api.ignoreCertificateErrors( ignoreCertificateErrors );
             return true;
         }
         return false;

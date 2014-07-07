@@ -9,11 +9,10 @@ import com.neon.intellij.plugins.gitlab.controller.editor.GLIssueVirtualFile;
 import com.neon.intellij.plugins.gitlab.model.gitlab.GLIssueState;
 import com.neon.intellij.plugins.gitlab.model.intellij.ConfigurableState;
 import com.neon.intellij.plugins.gitlab.view.GitLabView;
-import org.gitlab.api.models.GitlabIssue;
-import org.gitlab.api.models.GitlabProject;
-
 import java.io.IOException;
 import java.util.List;
+import org.gitlab.api.models.GitlabIssue;
+import org.gitlab.api.models.GitlabProject;
 import org.gitlab.api.models.GitlabUser;
 
 public class GLIController {
@@ -35,8 +34,9 @@ public class GLIController {
 
         this.jbFacade = new JBFacade( project );
 
-        String[] connectionProperties = getConnectionProperties();
-        this.glFacade = new GLFacade( connectionProperties[ 0 ], connectionProperties[ 1 ] );
+        Object[] connectionProperties = getConnectionProperties();
+        this.glFacade = new GLFacade(
+                (String)connectionProperties[ 0 ], (String)connectionProperties[ 1 ], (Boolean)connectionProperties[ 2] );
     }
 
     public Project getProject() {
@@ -107,14 +107,14 @@ public class GLIController {
     }
 
     public void refresh() {
-        String[] properties = getConnectionProperties();
-        glFacade.reload( properties[0], properties[1] );
+        Object[] properties = getConnectionProperties();
+        glFacade.reload( (String) properties[0], (String) properties[1], (Boolean) properties[2] );
     }
 
-    private String[] getConnectionProperties() {
+    private Object[] getConnectionProperties() {
         ConfigurableState state = ConfigurableState.getInstance();
         LOG.info( "getConnectionProperties() : host=" + state.getHost() + ", token=" + state.getToken() );
-        return new String[] { state.host, state.token };
+        return new Object[] { state.host, state.token, state.ignoreCertificateErrors };
     }
 
 }

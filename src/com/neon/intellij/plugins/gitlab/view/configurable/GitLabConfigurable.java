@@ -3,11 +3,10 @@ package com.neon.intellij.plugins.gitlab.view.configurable;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.options.SearchableConfigurable;
 import com.neon.intellij.plugins.gitlab.model.intellij.ConfigurableState;
+import javax.swing.JComponent;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import javax.swing.*;
 
 public class GitLabConfigurable implements SearchableConfigurable {
 
@@ -45,9 +44,11 @@ public class GitLabConfigurable implements SearchableConfigurable {
      *
      */
     public boolean isModified() {
-        String[] save = view.save();
-        return save == null || ! settings.getHost().equals( save[0] ) ||
-                ! settings.getToken().equals( save[1] );
+        Object[] save = view.save();
+        return save == null
+                || ! settings.getHost().equals( save[0] )
+                || ! settings.getToken().equals( save[1] )
+                || ! settings.getIgnoreCertificateErrors().equals( save[2] );
     }
 
     /**
@@ -55,9 +56,10 @@ public class GitLabConfigurable implements SearchableConfigurable {
      */
     @Override
     public void apply() throws ConfigurationException {
-        String[] save = view.save();
-        settings.setHost( save[0] );
-        settings.setToken( save[1] );
+        Object[] save = view.save();
+        settings.setHost( ( String ) save[0] );
+        settings.setToken( ( String ) save[1] );
+        settings.setIgnoreCertificateErrors( ( Boolean ) save[2] );
     }
 
     /**
