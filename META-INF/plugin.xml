@@ -1,7 +1,7 @@
 <idea-plugin version="2">
   <id>com.neon.intellij.plugins.gitlab</id>
   <name>GitLab Integration Plugin</name>
-  <version>1.0.3</version>
+  <version>1.0.4</version>
   <vendor email="diogo.sousa.neves@gmail.com" url="">Diogo Neves</vendor>
 
   <description><![CDATA[
@@ -25,6 +25,10 @@
     ]]></description>
 
   <change-notes><![CDATA[
+  ( 2014-07-07 ) <b>v1.0.4</b><br>
+    <ul>
+        <li>bug fixes</li>
+    </ul>
     ( 2014-06-23 ) <b>v1.0.3</b><br>
     <ul>
         <li>Issues list filter</li>
