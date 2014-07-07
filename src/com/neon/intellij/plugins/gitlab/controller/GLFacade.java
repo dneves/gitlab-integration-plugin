@@ -22,7 +22,7 @@ public class GLFacade {
     public boolean reload( final String host, final String token ) {
         if ( host != null && token != null && ! host.isEmpty() && ! token.isEmpty() ) {
             api = GitlabAPI.connect(host, token);
-            api.ignoreCertificateErrors(true);
+//            api.ignoreCertificateErrors(true);
             return true;
         }
         return false;
