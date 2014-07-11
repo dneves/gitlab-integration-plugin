@@ -2,14 +2,16 @@ package com.neon.intellij.plugins.gitlab.view.toolwindow;
 
 import com.intellij.openapi.progress.ProgressManager;
 import com.neon.intellij.plugins.gitlab.controller.GLIController;
-
 import com.neon.intellij.plugins.gitlab.model.intellij.GLIssueNode;
 import com.neon.intellij.plugins.gitlab.model.intellij.GLProjectNode;
-import javax.swing.*;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreePath;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Arrays;
+import javax.swing.JPopupMenu;
+import javax.swing.JTree;
+import javax.swing.SwingUtilities;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreePath;
 
 public class GLIssueListMouseAdapter extends MouseAdapter {
 
@@ -60,7 +62,7 @@ public class GLIssueListMouseAdapter extends MouseAdapter {
             }
 
             final GLProjectNode projectNode = (GLProjectNode) node;
-            ProgressManager.getInstance().run( new GetProjectIssuesTask( controller, projectNode, taskList ) );
+            ProgressManager.getInstance().run( new GetIssuesTask( controller, Arrays.asList( projectNode ), taskList ) );
         } else if ( node instanceof GLIssueNode ) {
             GLIssueNode issueNode = (GLIssueNode) node;
             controller.openEditor( issueNode.getUserObject() );

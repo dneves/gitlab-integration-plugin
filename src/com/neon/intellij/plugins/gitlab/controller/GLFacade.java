@@ -1,9 +1,11 @@
 package com.neon.intellij.plugins.gitlab.controller;
 
 import java.io.IOException;
-import java.util.Collections;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import org.gitlab.api.GitlabAPI;
 import org.gitlab.api.models.GitlabIssue;
 import org.gitlab.api.models.GitlabNamespace;
@@ -29,17 +31,17 @@ public class GLFacade {
 
     private void checkApi() throws IOException {
         if ( api == null ) {
+            // todo : launch plugin configuration window (how?)
             throw new IOException( "please, configure plugin settings" );
         }
     }
 
-    public List< GitlabProject > getProjects() throws IOException {
+    public Collection< GitlabProject > getProjects() throws IOException {
         checkApi();
 
-        List<GitlabProject> projects = api.getProjects();
-        Collections.sort( projects, new Comparator< GitlabProject >() {
+        SortedSet< GitlabProject > result = new TreeSet<>( new Comparator< GitlabProject >() {
             @Override
-            public int compare( GitlabProject o1, GitlabProject o2 ) {
+            public int compare(GitlabProject o1, GitlabProject o2) {
                 GitlabNamespace namespace1 = o1.getNamespace();
                 String n1 = namespace1 != null ? namespace1.getName().toLowerCase() : "Default";
                 GitlabNamespace namespace2 = o2.getNamespace();
@@ -49,36 +51,46 @@ public class GLFacade {
                 return compareNamespace != 0 ? compareNamespace : o1.getName().toLowerCase().compareTo(o2.getName().toLowerCase());
             }
         } );
-        return projects;
+
+        List<GitlabProject> projects = api.getProjects();
+        result.addAll( projects );
+
+        return result;
     }
 
 
-    public List< GitlabIssue > getIssues( final GitlabProject project ) throws IOException {
+    public Collection< GitlabIssue > getIssues( final GitlabProject project ) throws IOException {
         checkApi();
 
-        List<GitlabIssue> issues = api.getIssues( project );
-        Collections.sort( issues, new Comparator< GitlabIssue >() {
+        SortedSet< GitlabIssue > result = new TreeSet<>( new Comparator<GitlabIssue>() {
             @Override
-            public int compare( GitlabIssue o1, GitlabIssue o2 ) {
+            public int compare(GitlabIssue o1, GitlabIssue o2) {
                 return o1.getTitle().compareTo( o2.getTitle() );
             }
         } );
-        return issues;
+
+        List<GitlabIssue> issues = api.getIssues( project );
+        result.addAll( issues );
+
+        return result;
     }
 
-    public List< GitlabUser > getUsers() throws IOException {
+    public Collection< GitlabUser > getUsers() throws IOException {
         checkApi();
 
-        List<GitlabUser> users = api.getUsers();
-        Collections.sort( users, new Comparator<GitlabUser>() {
+        SortedSet< GitlabUser > result = new TreeSet<>( new Comparator<GitlabUser>() {
             @Override
-            public int compare(GitlabUser user1, GitlabUser user2) {
-                String label1 = GLIController.getLabel( user1 );
-                String label2 = GLIController.getLabel( user2 );
+            public int compare(GitlabUser o1, GitlabUser o2) {
+                String label1 = GLIController.getLabel( o1 );
+                String label2 = GLIController.getLabel( o2 );
                 return label1.compareTo( label2 );
             }
         });
-        return users;
+
+        List<GitlabUser> users = api.getUsers();
+        result.addAll( users );
+
+        return result;
     }
 
     public GitlabIssue createIssue(final GitlabIssue issue) throws IOException {

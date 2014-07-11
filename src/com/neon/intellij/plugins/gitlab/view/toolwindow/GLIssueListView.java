@@ -9,17 +9,18 @@ import com.neon.intellij.plugins.gitlab.model.intellij.GLNamespaceNode;
 import com.neon.intellij.plugins.gitlab.model.intellij.GLProjectNode;
 import info.clearthought.layout.TableLayout;
 import info.clearthought.layout.TableLayoutConstraints;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import javax.swing.JPanel;
+import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreePath;
 import org.gitlab.api.models.GitlabIssue;
 import org.gitlab.api.models.GitlabNamespace;
 import org.gitlab.api.models.GitlabProject;
-
-import javax.swing.*;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreePath;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class GLIssueListView extends JPanel implements ProjectsHolder, ProjectIssuesHolder {
 
@@ -60,7 +61,7 @@ public class GLIssueListView extends JPanel implements ProjectsHolder, ProjectIs
     }
 
     @Override
-    public void addProjects( List<GitlabProject> projects ) {
+    public void addProjects( Collection<GitlabProject> projects ) {
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) tree.getModel().getRoot();
 
         root.removeAllChildren();
@@ -68,14 +69,16 @@ public class GLIssueListView extends JPanel implements ProjectsHolder, ProjectIs
             return ;
         }
 
-        Map< Integer, GLNamespaceNode> namespaceNodes = new HashMap<Integer, GLNamespaceNode>();
+        Map< Integer, GLNamespaceNode> namespaceNodes = new HashMap<>();
 
+        final List< GLProjectNode > projectNodes = new LinkedList<>();
         for ( GitlabProject project : projects ) {
             GLNamespaceNode rootNodeFor = getRootNodeFor( project, root, namespaceNodes );
             GLProjectNode glProjectNode = new GLProjectNode(project);
             rootNodeFor.add( glProjectNode );
-            ProgressManager.getInstance().run( new GetProjectIssuesTask( controller, glProjectNode, this ) );
+            projectNodes.add( glProjectNode );
         }
+        ProgressManager.getInstance().run( new GetIssuesTask( controller, projectNodes, this ) );
 
         tree.treeDidChange();
         tree.expandPath( new TreePath( root.getPath() ) );
@@ -95,7 +98,7 @@ public class GLIssueListView extends JPanel implements ProjectsHolder, ProjectIs
     }
 
     @Override
-    public void addIssues( final List<GitlabIssue> issues, final GLProjectNode projectNode ) {
+    public void addIssues( final Collection<GitlabIssue> issues, final GLProjectNode projectNode ) {
         projectNode.removeAllChildren();
 
         if ( issues == null ) {

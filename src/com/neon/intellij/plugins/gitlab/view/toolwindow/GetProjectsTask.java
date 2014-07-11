@@ -5,7 +5,7 @@ import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.progress.Task;
 import com.neon.intellij.plugins.gitlab.controller.GLIController;
 import java.io.IOException;
-import java.util.List;
+import java.util.Collection;
 import javax.swing.SwingUtilities;
 import org.gitlab.api.models.GitlabProject;
 import org.jetbrains.annotations.NotNull;
@@ -27,13 +27,13 @@ public class GetProjectsTask extends Task.Backgroundable {
     @Override
     public void run(@NotNull final ProgressIndicator progressIndicator) {
         progressIndicator.setFraction( 0.0 );
-        progressIndicator.setText( "Fetching remote projects" );
+        progressIndicator.setText( "fetching remote projects" );
 
         try {
-            final List<GitlabProject> projects = controller.getProjects();
+            final Collection<GitlabProject> projects = controller.getProjects();
 
             progressIndicator.setFraction( 0.5 );
-            progressIndicator.setText( "Got " + ( projects == null ? "0" : projects.size() ) + " remote projects" );
+            progressIndicator.setText( "got " + ( projects == null ? "0" : projects.size() ) + " projects" );
 
             SwingUtilities.invokeLater(new Runnable() {
                 @Override
@@ -43,7 +43,7 @@ public class GetProjectsTask extends Task.Backgroundable {
             });
 
             progressIndicator.setFraction( 1.0 );
-            progressIndicator.setText( "Get projects done" );
+            progressIndicator.setText( "get projects done" );
         } catch ( IOException e1 ) {
             LOG.error( e1 );
         }

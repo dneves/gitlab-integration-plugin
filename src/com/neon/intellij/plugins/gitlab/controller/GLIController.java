@@ -9,12 +9,11 @@ import com.neon.intellij.plugins.gitlab.controller.editor.GLIssueVirtualFile;
 import com.neon.intellij.plugins.gitlab.model.gitlab.GLIssueState;
 import com.neon.intellij.plugins.gitlab.model.intellij.ConfigurableState;
 import com.neon.intellij.plugins.gitlab.view.GitLabView;
+import java.io.IOException;
+import java.util.Collection;
 import org.gitlab.api.models.GitlabIssue;
 import org.gitlab.api.models.GitlabProject;
 import org.gitlab.api.models.GitlabUser;
-
-import java.io.IOException;
-import java.util.List;
 
 public class GLIController {
 
@@ -52,15 +51,15 @@ public class GLIController {
         toolWindow.getContentManager().addContent( content );
     }
 
-    public List< GitlabProject > getProjects() throws IOException {
+    public Collection< GitlabProject > getProjects() throws IOException {
         return glFacade.getProjects();
     }
 
-    public List<GitlabIssue > getIssues( final GitlabProject project ) throws IOException {
+    public Collection<GitlabIssue > getIssues( final GitlabProject project ) throws IOException {
         return glFacade.getIssues( project );
     }
 
-    public List<GitlabUser> getUsers() throws IOException {
+    public Collection<GitlabUser> getUsers() throws IOException {
         return glFacade.getUsers();
     }
 

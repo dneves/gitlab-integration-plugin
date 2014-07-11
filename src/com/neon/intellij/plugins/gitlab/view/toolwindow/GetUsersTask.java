@@ -5,7 +5,7 @@ import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.progress.Task;
 import com.neon.intellij.plugins.gitlab.controller.GLIController;
 import java.io.IOException;
-import java.util.List;
+import java.util.Collection;
 import javax.swing.SwingUtilities;
 import org.gitlab.api.models.GitlabUser;
 import org.jetbrains.annotations.NotNull;
@@ -30,7 +30,7 @@ public class GetUsersTask extends Task.Backgroundable {
         progressIndicator.setText( "Fetching remote users" );
 
         try {
-            final List<GitlabUser> users = controller.getUsers();
+            final Collection<GitlabUser> users = controller.getUsers();
 
             progressIndicator.setFraction( 0.5 );
             progressIndicator.setText( "Got " + ( users == null ? "0" : users.size() ) + " remote users" );
