@@ -65,7 +65,7 @@ public class GLFacade {
         SortedSet< GitlabIssue > result = new TreeSet<>( new Comparator<GitlabIssue>() {
             @Override
             public int compare(GitlabIssue o1, GitlabIssue o2) {
-                return o1.getTitle().compareTo( o2.getTitle() );
+                return new Integer( o1.getId() ).compareTo( o2.getId() );
             }
         } );
 

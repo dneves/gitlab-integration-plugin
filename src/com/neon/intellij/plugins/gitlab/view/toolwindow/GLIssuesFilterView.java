@@ -3,6 +3,7 @@ package com.neon.intellij.plugins.gitlab.view.toolwindow;
 import com.intellij.openapi.progress.ProgressManager;
 import com.intellij.openapi.ui.ComboBox;
 import com.neon.intellij.plugins.gitlab.controller.GLIController;
+import com.neon.intellij.plugins.gitlab.controller.task.GetUsersTask;
 import info.clearthought.layout.TableLayout;
 import info.clearthought.layout.TableLayoutConstraints;
 import java.awt.Dimension;

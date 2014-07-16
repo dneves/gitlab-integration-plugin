@@ -1,7 +1,7 @@
 <idea-plugin version="2">
   <id>com.neon.intellij.plugins.gitlab</id>
   <name>GitLab Integration Plugin</name>
-  <version>1.0.5</version>
+  <version>1.0.6</version>
   <vendor email="diogo.sousa.neves@gmail.com" url="">Diogo Neves</vendor>
 
   <description><![CDATA[
@@ -12,19 +12,24 @@
     Features:<br>
     <ul>
         <li>List projects (by namespaces) and their issues</li>
+        <li>Filter issues by author, assignee or custom text</li>
         <li>Re-open / close issues (right click)</li>
         <li>Edit issues (double click)</li>
     </ul>
     <br>
     Please, leave a comment or drop me an email with any issues/reports.<br>
     <br>
-    Note: this plugin requires intellij to be started with Java7.<br>
+    <b>Note: this plugin requires intellij to be started with Java7.</b><br>
     <br>
     After plugin install, go to IDE preferences, and look for Gitlab Integration.<br>
     You'll need the host and your API key from your gitlab (which you can find under Profile Settings -> Account)<br>
     ]]></description>
 
   <change-notes><![CDATA[
+  ( in development ) <b>v1.0.6</b><br>
+    <ul>
+        <li>UI minor improves</li>
+    </ul>
   ( 2014-07-08 ) <b>v1.0.5</b><br>
     <ul>
         <li>Fixed possible ssl error (ignoring certificate errors by default)</li>
@@ -71,7 +76,9 @@
       <applicationConfigurable id="GitLabConfigurableProvider" provider="com.neon.intellij.plugins.gitlab.view.configurable.GitLabConfigurableProvider" />
 
       <!-- plugin tool window -->
-      <toolWindow id="GitLabIntegration" anchor="bottom" factoryClass="com.neon.intellij.plugins.gitlab.GitLabToolWindowFactory"/>
+      <toolWindow id="GitLabIntegration" anchor="bottom"
+                  icon="/com/neon/intellij/plugins/gitlab/icons/gitlab.jpg"
+                  factoryClass="com.neon.intellij.plugins.gitlab.GitLabToolWindowFactory"/>
 
   </extensions>
 

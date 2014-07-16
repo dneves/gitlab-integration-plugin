@@ -8,16 +8,16 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.DefaultActionGroup;
 import com.intellij.openapi.progress.ProgressManager;
 import com.neon.intellij.plugins.gitlab.controller.GLIController;
-import com.neon.intellij.plugins.gitlab.view.toolwindow.GLIssueListView;
+import com.neon.intellij.plugins.gitlab.controller.task.GetProjectsTask;
 import com.neon.intellij.plugins.gitlab.model.intellij.GLProjectNode;
+import com.neon.intellij.plugins.gitlab.view.toolwindow.GLIssueListView;
 import com.neon.intellij.plugins.gitlab.view.toolwindow.GLIssuesFilterView;
-import com.neon.intellij.plugins.gitlab.view.toolwindow.GetProjectsTask;
 import java.awt.BorderLayout;
 import java.awt.Component;
+import javax.swing.JComponent;
+import javax.swing.JPanel;
 import org.gitlab.api.models.GitlabIssue;
 import org.gitlab.api.models.GitlabProject;
-
-import javax.swing.*;
 
 public class GitLabView extends JPanel {
 

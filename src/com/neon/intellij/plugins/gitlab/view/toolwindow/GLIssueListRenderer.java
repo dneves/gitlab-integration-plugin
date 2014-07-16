@@ -3,16 +3,25 @@ package com.neon.intellij.plugins.gitlab.view.toolwindow;
 import com.neon.intellij.plugins.gitlab.model.intellij.GLIssueNode;
 import com.neon.intellij.plugins.gitlab.model.intellij.GLNamespaceNode;
 import com.neon.intellij.plugins.gitlab.model.intellij.GLProjectNode;
+import info.clearthought.layout.TableLayout;
+import info.clearthought.layout.TableLayoutConstraints;
+import java.awt.Component;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTree;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeCellRenderer;
 import org.gitlab.api.models.GitlabIssue;
 import org.gitlab.api.models.GitlabNamespace;
 import org.gitlab.api.models.GitlabProject;
 
-import javax.swing.*;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreeCellRenderer;
-import java.awt.*;
+public class GLIssueListRenderer extends DefaultTreeCellRenderer {
 
-public class GLIssueListRenderer implements TreeCellRenderer {
+    private final ImageIcon fileIcon = new ImageIcon(getClass().getResource("/com/neon/intellij/plugins/gitlab/icons/file-icon-16.png"));
+
+    private final ImageIcon folderIcon = new ImageIcon(getClass().getResource("/com/neon/intellij/plugins/gitlab/icons/folder-icon-16.png"));
+
 
     public GLIssueListRenderer() {
 
@@ -23,7 +32,10 @@ public class GLIssueListRenderer implements TreeCellRenderer {
         StringBuilder sb = new StringBuilder();
         DefaultMutableTreeNode node = ( DefaultMutableTreeNode ) value;
 
-        int childCount = tree.getModel().getChildCount(node);
+        boolean isIssue = node instanceof GLIssueNode;
+
+        int childCount = tree.getModel().getChildCount( node );
+
         if ( node instanceof GLNamespaceNode) {
             GLNamespaceNode namespaceNode = (GLNamespaceNode) node;
             GitlabNamespace namespace = namespaceNode.getUserObject();
@@ -44,7 +56,7 @@ public class GLIssueListRenderer implements TreeCellRenderer {
             GLProjectNode projectNode = (GLProjectNode) node;
             GitlabProject project = projectNode.getUserObject();
 
-            sb.append( "#" ).append( project.getId() ).append( ": " ).append( project.getName() );
+            sb.append(project.getName());
             if ( project.getDescription() != null && ! project.getDescription().trim().isEmpty() ) {
                 sb.append( " - " ).append( project.getDescription() );
             }
@@ -65,7 +77,17 @@ public class GLIssueListRenderer implements TreeCellRenderer {
             }
         }
 
-        return new JLabel( sb.toString() );
+        TableLayout layout = new TableLayout(
+                new double[]{TableLayout.MINIMUM, TableLayout.FILL},
+                new double[]{TableLayout.MINIMUM}
+        );
+        layout.setHGap( 5 );
+
+        JPanel panel = new JPanel( layout );
+        panel.add( new JLabel( leaf && isIssue ? fileIcon : folderIcon ), new TableLayoutConstraints( 0, 0 ) );
+        panel.add( new JLabel( sb.toString() ), new TableLayoutConstraints( 1, 0 ) );
+
+        return panel;
     }
 
 }

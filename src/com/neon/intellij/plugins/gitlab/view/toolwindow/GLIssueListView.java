@@ -4,6 +4,7 @@ import com.intellij.openapi.progress.ProgressManager;
 import com.intellij.ui.components.JBScrollPane;
 import com.intellij.ui.treeStructure.Tree;
 import com.neon.intellij.plugins.gitlab.controller.GLIController;
+import com.neon.intellij.plugins.gitlab.controller.task.GetIssuesTask;
 import com.neon.intellij.plugins.gitlab.model.intellij.GLIssueNode;
 import com.neon.intellij.plugins.gitlab.model.intellij.GLNamespaceNode;
 import com.neon.intellij.plugins.gitlab.model.intellij.GLProjectNode;

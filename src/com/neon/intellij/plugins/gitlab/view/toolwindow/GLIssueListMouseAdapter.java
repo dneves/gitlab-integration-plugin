@@ -2,6 +2,7 @@ package com.neon.intellij.plugins.gitlab.view.toolwindow;
 
 import com.intellij.openapi.progress.ProgressManager;
 import com.neon.intellij.plugins.gitlab.controller.GLIController;
+import com.neon.intellij.plugins.gitlab.controller.task.GetIssuesTask;
 import com.neon.intellij.plugins.gitlab.model.intellij.GLIssueNode;
 import com.neon.intellij.plugins.gitlab.model.intellij.GLProjectNode;
 import java.awt.event.MouseAdapter;

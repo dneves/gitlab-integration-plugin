@@ -5,13 +5,14 @@ Lets you interact with gitlab from within your IDE.
 Features:
 <ul>
     <li>List projects (by namespaces) and their issues</li>
+    <li>Filter issues by author, assignee or custom text</li>
     <li>Re-open / close issues (right click)</li>
     <li>Edit issues (double click)</li>
 </ul>
 
 Please, leave a comment or drop me an email with any issues/reports.
 
-Note: this plugin requires intellij to be started with Java7 due to third party libs.
+<b>Note: this plugin requires intellij to be started with Java7 due to third party libs.</b>
 
 ## How To
 
@@ -20,6 +21,10 @@ You'll need the host and your API key from your gitlab (which you can find under
 
 ## Change notes
 
+( in development ) <b>v1.0.6</b><br>
+<ul>
+    <li>UI minor improves</li>
+</ul>
 ( 2014-07-08 ) <b>v1.0.5</b><br>
 <ul>
     <li>Fixed possible ssl error (ignoring certificate errors by default)</li>

@@ -1,9 +1,10 @@
-package com.neon.intellij.plugins.gitlab.view.toolwindow;
+package com.neon.intellij.plugins.gitlab.controller.task;
 
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.progress.Task;
 import com.neon.intellij.plugins.gitlab.controller.GLIController;
+import com.neon.intellij.plugins.gitlab.view.toolwindow.UsersHolder;
 import java.io.IOException;
 import java.util.Collection;
 import javax.swing.SwingUtilities;
