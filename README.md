@@ -51,6 +51,10 @@ You'll need the host and your API key from your gitlab (which you can find under
     <li>Plugin creation</li>
 </ul>
 
+## Author
+
+Author:: Diogo Neves ( <a href="mailto:diogo.sousa.neves@gmail.com">diogo.sousa.neves@gmail.com</a> )
+
 ## Licence
 
 The MIT License (MIT)
