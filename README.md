@@ -59,7 +59,7 @@ Author:: Diogo Neves ( <a href="mailto:diogo.sousa.neves@gmail.com">diogo.sousa.
 
 The MIT License (MIT)
 
-Copyright (c) 2014 Luis Nabais
+Copyright (c) 2014 Diogo Neves
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
