@@ -68,7 +68,7 @@ public class GLIssueListRenderer extends DefaultTreeCellRenderer {
             GLIssueNode issueNode = (GLIssueNode) node;
             GitlabIssue issue = issueNode.getUserObject();
 
-            sb.append( "#" ).append( issue.getId() ).append( ": " ).append( issue.getTitle() ).append( " ( " ).append( issue.getState() ).append( " )" );
+            sb.append( "#" ).append( issue.getIid() ).append( ": " ).append( issue.getTitle() ).append( " ( " ).append( issue.getState() ).append( " )" );
 
         } else {
             sb.append( node.toString() );
