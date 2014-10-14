@@ -48,7 +48,7 @@ public class GetIssuesTask extends Task.Backgroundable {
     }
 
     private List< UpdatableComponents > fetch( final ProgressIndicator progressIndicator, final List< GLProjectNode > projectNodes ) {
-        final List< UpdatableComponents > update = new LinkedList<>();
+        final List< UpdatableComponents > update = new LinkedList< UpdatableComponents >();
         for ( final GLProjectNode projectNode : projectNodes ) {
             try {
                 final Collection<GitlabIssue> issues = controller.getIssues( projectNode.getUserObject() );

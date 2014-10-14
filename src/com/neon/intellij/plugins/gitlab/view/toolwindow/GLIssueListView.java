@@ -70,9 +70,9 @@ public class GLIssueListView extends JPanel implements ProjectsHolder, ProjectIs
             return ;
         }
 
-        Map< Integer, GLNamespaceNode> namespaceNodes = new HashMap<>();
+        Map< Integer, GLNamespaceNode> namespaceNodes = new HashMap< Integer, GLNamespaceNode>();
 
-        final List< GLProjectNode > projectNodes = new LinkedList<>();
+        final List< GLProjectNode > projectNodes = new LinkedList<GLProjectNode>();
         for ( GitlabProject project : projects ) {
             GLNamespaceNode rootNodeFor = getRootNodeFor( project, root, namespaceNodes );
             GLProjectNode glProjectNode = new GLProjectNode(project);

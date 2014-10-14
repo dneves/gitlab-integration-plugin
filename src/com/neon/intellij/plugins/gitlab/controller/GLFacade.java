@@ -39,7 +39,7 @@ public class GLFacade {
     public Collection< GitlabProject > getProjects() throws IOException {
         checkApi();
 
-        SortedSet< GitlabProject > result = new TreeSet<>( new Comparator< GitlabProject >() {
+        SortedSet< GitlabProject > result = new TreeSet< GitlabProject>( new Comparator< GitlabProject >() {
             @Override
             public int compare(GitlabProject o1, GitlabProject o2) {
                 GitlabNamespace namespace1 = o1.getNamespace();
@@ -62,7 +62,7 @@ public class GLFacade {
     public Collection< GitlabIssue > getIssues( final GitlabProject project ) throws IOException {
         checkApi();
 
-        SortedSet< GitlabIssue > result = new TreeSet<>( new Comparator<GitlabIssue>() {
+        SortedSet< GitlabIssue > result = new TreeSet< GitlabIssue>( new Comparator<GitlabIssue>() {
             @Override
             public int compare(GitlabIssue o1, GitlabIssue o2) {
                 return new Integer( o1.getId() ).compareTo( o2.getId() );
@@ -78,7 +78,7 @@ public class GLFacade {
     public Collection< GitlabUser > getUsers() throws IOException {
         checkApi();
 
-        SortedSet< GitlabUser > result = new TreeSet<>( new Comparator<GitlabUser>() {
+        SortedSet< GitlabUser > result = new TreeSet< GitlabUser>( new Comparator<GitlabUser>() {
             @Override
             public int compare(GitlabUser o1, GitlabUser o2) {
                 String label1 = GLIController.getLabel( o1 );
