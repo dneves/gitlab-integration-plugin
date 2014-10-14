@@ -12,8 +12,6 @@ Features:
 
 Please, leave a comment or drop me an email with any issues/reports.
 
-<b>Note: this plugin requires intellij to be started with Java7 due to third party libs.</b>
-
 ## How To
 
 After plugin install, go to IDE preferences, and look for Gitlab Integration.<br>
@@ -21,9 +19,14 @@ You'll need the host and your API key from your gitlab (which you can find under
 
 ## Change notes
 
-( in development ) <b>v1.0.6</b><br>
+( in development ) <b>v1.0.7</b><br>
 <ul>
-    <li>UI minor improves</li>
+    <li>to be announced</li>
+</ul>
+( 2014-10-14 ) <b>v1.0.6</b><br>
+<ul>
+    <li>Java 6 / 7 versions</li>
+    <li>displaying issue Iid instead of Id</li>
 </ul>
 ( 2014-07-08 ) <b>v1.0.5</b><br>
 <ul>
