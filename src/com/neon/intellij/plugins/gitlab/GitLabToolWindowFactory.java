@@ -13,7 +13,7 @@ public class GitLabToolWindowFactory implements ToolWindowFactory {
 
     @Override
     public void createToolWindowContent( Project project, ToolWindow toolWindow ) {
-        final GLIController controller = new GLIController( project, toolWindow );
+        GLIController controller = new GLIController( project, toolWindow );
         controller.run();
     }
 
