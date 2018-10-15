@@ -1,0 +1,36 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+}
+
+plugins {
+    id "org.jetbrains.intellij" version "0.3.12"
+}
+
+apply plugin: 'idea'
+apply plugin: 'org.jetbrains.intellij'
+apply plugin: 'java'
+
+intellij {
+    //IntelliJ IDEA 2016.3 dependency; for a full list of IntelliJ IDEA releases please see https://www.jetbrains.com/intellij-repository/releases
+    version 'IC-2016.3'
+
+    //Bundled plugin dependencies
+    plugins 'coverage'
+
+//    pluginName 'GitLab Integration Plugin'
+}
+
+group 'org.jetbrains'
+version '1.0.6' // Plugin version
+
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile group: 'org.gitlab4j', name: 'gitlab4j-api', version: '4.8.50'
+    compile 'tablelayout:TableLayout:20050920'
+}
