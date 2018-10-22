@@ -1,15 +1,15 @@
 package com.neon.intellij.plugins.gitlab.view.toolwindow;
 
-import com.neon.intellij.plugins.gitlab.controller.GLIController;
-import com.neon.intellij.plugins.gitlab.model.gitlab.GLIssueState;
-import com.neon.intellij.plugins.gitlab.model.intellij.GLIssueNode;
+import com.neon.intellij.plugins.gitlab.model.gitlab.GIPGroup;
+import com.neon.intellij.plugins.gitlab.model.gitlab.GIPProject;
+import com.neon.intellij.plugins.gitlab.model.intellij.GLGroupNode;
 import com.neon.intellij.plugins.gitlab.model.intellij.GLProjectNode;
+
 import javax.swing.event.TreeModelListener;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
-import org.gitlab.api.models.GitlabUser;
 
 /**
  * kindly 'stolen' and adapted from http://www.adrianwalker.org/2012/04/filtered-jtree.html
@@ -59,28 +59,34 @@ public final class FilteredTreeModel implements TreeModel {
     private boolean recursiveMatch( final Object node ) {
         boolean matches = true;
 
-        String title = null;
-        if ( node instanceof GLIssueNode) {
-            title = ( ( GLIssueNode ) node ).getUserObject().getTitle();
-            GLIssueState issueState = GLIssueState.fromValue(((GLIssueNode) node).getUserObject().getState());
+        if ( node instanceof GLGroupNode ) {
+            GIPGroup group = ((GLGroupNode) node).getUserObject();
 
-            GitlabUser authorUser = ((GLIssueNode) node).getUserObject().getAuthor();
-            String author = GLIController.getLabel( authorUser );
-            GitlabUser assigneeUser = ((GLIssueNode) node).getUserObject().getAssignee();
-            String assignee = GLIController.getLabel( assigneeUser );
+            matches = group.name.toLowerCase().contains(filter.toLowerCase());
+        } else if ( node instanceof GLProjectNode ) {
+            GIPProject project = ((GLProjectNode) node).getUserObject();
 
-            matches = ( issueState == null || (showClosedIssues || ! GLIssueState.CLOSED.equals( issueState ) ) );
-            if ( this.author != null && ! this.author.trim().isEmpty() ) {
-                matches &= this.author.equals( author );
-            }
-            if ( this.assignee != null && ! this.assignee.trim().isEmpty() ) {
-                matches &= this.assignee.equals( assignee );
-            }
-
-        } else if ( node instanceof GLProjectNode) {
-            title = ( ( GLProjectNode ) node ).getUserObject().getName();
+            matches = project.name.toLowerCase().contains(filter.toLowerCase());
         }
-        matches &= ( title != null && title.toLowerCase().contains( filter.toLowerCase() ) );
+//        TODO: filter on issue node
+//        if ( node instanceof GLIssueNode) {
+//            title = ( ( GLIssueNode ) node ).getUserObject().getTitle();
+//            GLIssueState issueState = GLIssueState.fromValue(((GLIssueNode) node).getUserObject().getState());
+//
+//            GitlabUser authorUser = ((GLIssueNode) node).getUserObject().getAuthor();
+//            String author = GLIController.getLabel( authorUser );
+//            GitlabUser assigneeUser = ((GLIssueNode) node).getUserObject().getAssignee();
+//            String assignee = GLIController.getLabel( assigneeUser );
+//
+//            matches = ( issueState == null || (showClosedIssues || ! GLIssueState.CLOSED.equals( issueState ) ) );
+//            if ( this.author != null && ! this.author.trim().isEmpty() ) {
+//                matches &= this.author.equals( author );
+//            }
+//            if ( this.assignee != null && ! this.assignee.trim().isEmpty() ) {
+//                matches &= this.assignee.equals( assignee );
+//            }
+//
+//        }
 
 
         int childCount = treeModel.getChildCount(node);

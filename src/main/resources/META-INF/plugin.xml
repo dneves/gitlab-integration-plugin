@@ -26,7 +26,8 @@
   <change-notes><![CDATA[
   ( in development ) <b>v1.0.7</b><br>
     <ul>
-        <li>to be announced</li>
+        <li>Java 8 requirement</li>
+        <li>gitlab v4 api support</li>
     </ul>
     ( 2014-10-14 ) <b>v1.0.6</b><br>
     <ul>
@@ -80,8 +81,9 @@
 
       <!-- plugin tool window -->
       <toolWindow id="GitLabIntegration" anchor="bottom"
-                  icon="/com/neon/intellij/plugins/gitlab/icons/gitlab.jpg"
+
                   factoryClass="com.neon.intellij.plugins.gitlab.GitLabToolWindowFactory"/>
+    <!--icon="/com/neon/intellij/plugins/gitlab/icons/gitlab.jpg"-->
 
   </extensions>
 

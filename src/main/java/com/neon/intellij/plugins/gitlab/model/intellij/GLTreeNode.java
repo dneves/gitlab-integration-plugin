@@ -1,4 +1,4 @@
-package com.neon.intellij.plugins.gitlab.model;
+package com.neon.intellij.plugins.gitlab.model.intellij;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
