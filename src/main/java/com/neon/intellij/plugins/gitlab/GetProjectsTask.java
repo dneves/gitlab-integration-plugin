@@ -33,10 +33,11 @@ public class GetProjectsTask extends Task.Backgroundable {
     @Override
     public void run(@NotNull ProgressIndicator indicator) {
         indicator.setIndeterminate(true);
-        indicator.setText("fetching gitlab projects for group: ");
+        request( 10, 1 );
+    }
 
-//        TODO: request more while hasNext (response.body.size >= limit)
-        gitLabService.listProjects(groupId, 10 ).subscribe(new Observer<List<GIPProject>>() {
+    private void request( final int limit, final int page ) {
+        gitLabService.listProjects(groupId, limit, page).subscribe(new Observer<List<GIPProject>>() {
             @Override
             public void onSubscribe(Disposable d) {
 
@@ -44,7 +45,15 @@ public class GetProjectsTask extends Task.Backgroundable {
 
             @Override
             public void onNext(List<GIPProject> projects) {
+                if ( projects == null ) {
+                    return ;
+                }
+
                 projects.forEach(projectObserver::accept);
+
+                if ( projects.size() >= limit ) {
+                    request( limit, page + 1 );
+                }
             }
 
             @Override

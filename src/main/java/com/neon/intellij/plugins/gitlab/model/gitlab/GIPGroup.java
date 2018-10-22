@@ -6,8 +6,14 @@ public class GIPGroup {
 
     public String name;
 
+    public String full_name;
+
+    public String full_path;
+
     public String description;
 
     public String web_url;
+
+    public Integer parent_id;
 
 }

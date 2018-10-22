@@ -30,13 +30,12 @@ public class GetGroupsTask extends Task.Backgroundable {
 
     @Override
     public void run( @NotNull ProgressIndicator indicator ) {
-        long start = System.currentTimeMillis();
-
         indicator.setIndeterminate(true);
-        indicator.setText("fetching gitlab groups");
+        request( 10, 1 );
+    }
 
-//        TODO: request more while hasNext (response.body.size >= limit)
-        gitLabService.listGroups( 10 )
+    private void request( final int limit, final int page ) {
+        gitLabService.listGroups( limit, page )
                 .subscribe(new Observer<List<GIPGroup>>() {
                     @Override
                     public void onSubscribe(Disposable d) {
@@ -45,7 +44,15 @@ public class GetGroupsTask extends Task.Backgroundable {
 
                     @Override
                     public void onNext(List<GIPGroup> groups) {
+                        if ( groups == null ) {
+                            return ;
+                        }
+
                         groups.forEach(groupObserver::accept);
+
+                        if ( groups.size() >= limit ) {
+                            request( limit, page + 1 );
+                        }
                     }
 
                     @Override
@@ -58,9 +65,6 @@ public class GetGroupsTask extends Task.Backgroundable {
 
                     }
                 });
-
-        indicator.setFraction(1.0);
-        indicator.setText("fetched gitlab groups (" + (System.currentTimeMillis() - start) + "ms)");
     }
 
 }

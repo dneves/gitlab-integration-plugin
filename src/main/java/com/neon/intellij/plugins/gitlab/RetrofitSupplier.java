@@ -1,6 +1,7 @@
 package com.neon.intellij.plugins.gitlab;
 
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -34,8 +35,13 @@ public class RetrofitSupplier implements Supplier<Retrofit> {
 
         OkHttpClient okHttpClient = getOkHttpClient( connectionProperties.ignoreSSLCertificateErrors, tokenInterceptor );
 
+        HttpUrl baseUrl = HttpUrl.parse(connectionProperties.host)
+                .newBuilder()
+                .addPathSegments( "api/v4/" )
+                .build();
+
         return new Retrofit.Builder()
-                .baseUrl( connectionProperties.host )
+                .baseUrl( baseUrl )
                 .addConverterFactory(MoshiConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .client(okHttpClient)

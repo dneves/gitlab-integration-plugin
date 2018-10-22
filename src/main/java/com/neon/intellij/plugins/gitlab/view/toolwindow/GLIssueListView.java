@@ -64,6 +64,18 @@ public class GLIssueListView extends JPanel implements GIPGroupObserver, GIPProj
         LOGGER.info( "[group] " + group.id + ". " + group.name );
 
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) tree.getModel().getRoot();
+        if ( group.parent_id != null ) {
+            root = groups.get(group.parent_id);
+            if ( root == null ) {
+
+                GIPGroup temp = new GIPGroup();
+                temp.id = group.parent_id;
+
+                root = new GLGroupNode( temp );
+
+                groups.put( temp.id, (GLGroupNode) root);
+            }
+        }
 
         GLGroupNode glGroupNode = new GLGroupNode(group);
         groups.put( group.id, glGroupNode );
