@@ -8,9 +8,11 @@ import com.intellij.ui.content.Content;
 import com.intellij.ui.content.ContentFactory;
 import com.neon.intellij.plugins.gitlab.*;
 import com.neon.intellij.plugins.gitlab.controller.editor.GLIssueVirtualFile;
+import com.neon.intellij.plugins.gitlab.GetUsersTask;
 import com.neon.intellij.plugins.gitlab.view.GitLabView;
 
 import javax.swing.*;
+import java.util.function.Supplier;
 import java.util.logging.Logger;
 
 public class GLIController {
@@ -34,51 +36,38 @@ public class GLIController {
     public void run() {
         final GitLabView view = new GitLabView( this );
 
-        final GitLabService gitLabService = new GitLabServiceSupplier(new ConnectionPropertiesSupplier()).get();
+//        final GitLabService gitLabService = new GitLabServiceSupplier(new ConnectionPropertiesSupplier()).get();
+        final GitLabService gitLabService = new GitLabServiceSupplier(new Supplier<ConnectionPropertiesSupplier.ConnectionProperties>() {
+            @Override
+            public ConnectionPropertiesSupplier.ConnectionProperties get() {
+                return new ConnectionPropertiesSupplier.ConnectionProperties( "https://git.impresa.pt/", "uz2_ypRY2FJj2Mxzt8eN", true );
+            }
+        }).get();
+
 
         GIPGroupObserver groupObserver = group -> {
             SwingUtilities.invokeLater(() -> view.accept( group ));
 
-            ProgressManager.getInstance().run( new GetProjectsTask(project, gitLabService,
-                    project -> SwingUtilities.invokeLater(() -> view.accept( project )),
-                    group.id) );
+            GIPProjectObserver projectObserver = project -> {
+                SwingUtilities.invokeLater(() -> view.accept( project ));
+
+                GetIssuesTask getIssuesTask = new GetIssuesTask(GLIController.this.project, gitLabService,
+                        issue -> SwingUtilities.invokeLater(() -> view.accept(issue)), project.id);
+                ProgressManager.getInstance().run(getIssuesTask);
+            };
+
+            GetProjectsTask getProjectsTask = new GetProjectsTask( project, gitLabService, projectObserver, group.id);
+            ProgressManager.getInstance().run(getProjectsTask);
         };
+        ProgressManager.getInstance().run( new GetGroupsTask( project, gitLabService, groupObserver ) );
 
-        GetGroupsTask getGroupsTask = new GetGroupsTask(project, gitLabService, groupObserver );
-
-        ProgressManager.getInstance().run( getGroupsTask );
+        ProgressManager.getInstance().run( new GetUsersTask( project, gitLabService, view ) );
 
         ContentFactory contentFactory = ContentFactory.SERVICE.getInstance();
         Content content = contentFactory.createContent( view, "", false );
         toolWindow.getContentManager().addContent( content );
     }
 
-//    public Collection< GitlabProject > getProjects() throws IOException {
-//        return glFacade.getProjects();
-//    }
-//
-//    public Collection<GitlabIssue > getIssues( final GitlabProject project ) throws IOException {
-//        return glFacade.getIssues( project );
-//    }
-//
-//    public Collection<GitlabUser> getUsers() throws IOException {
-//        return glFacade.getUsers();
-//    }
-//
-//    public static String getLabel( final GitlabUser user ) {
-//        String result = null;
-//        if ( user != null ) {
-//            result = user.getName();
-//            if (result == null || result.trim().isEmpty()) {
-//                result = user.getEmail();
-//            }
-//            if (result == null || result.trim().isEmpty()) {
-//                result = user.getUsername();
-//            }
-//        }
-//        return result != null ? result : "";
-//    }
-//
 //    public void openEditor( final GitlabIssue issue ) {
 //        jbFacade.openEditor( new GLIssueVirtualFile( this, issue ) );
 //    }

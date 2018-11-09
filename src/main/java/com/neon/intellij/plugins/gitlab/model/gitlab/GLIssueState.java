@@ -1,5 +1,6 @@
 package com.neon.intellij.plugins.gitlab.model.gitlab;
 
+@Deprecated
 public enum GLIssueState {
 
     OPENED( "Opened", "opened" )

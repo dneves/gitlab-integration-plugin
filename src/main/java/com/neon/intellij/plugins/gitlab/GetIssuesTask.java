@@ -3,7 +3,7 @@ package com.neon.intellij.plugins.gitlab;
 import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.progress.Task;
 import com.intellij.openapi.project.Project;
-import com.neon.intellij.plugins.gitlab.model.gitlab.GIPProject;
+import com.neon.intellij.plugins.gitlab.model.gitlab.GIPIssue;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 import org.jetbrains.annotations.NotNull;
@@ -13,21 +13,21 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class GetProjectsTask extends Task.Backgroundable {
+public class GetIssuesTask extends Task.Backgroundable {
 
-    private static final Logger LOGGER = Logger.getLogger( GetProjectsTask.class.getName() );
+    private static final Logger LOGGER = Logger.getLogger( GetIssuesTask.class.getName() );
 
     private final GitLabService gitLabService;
 
-    private final GIPProjectObserver projectObserver;
+    private final GIPIssueObserver issueObserver;
 
-    private final Integer groupId;
+    private final Integer projectId;
 
-    public GetProjectsTask(@Nullable Project project, GitLabService gitLabService, GIPProjectObserver projectObserver, Integer groupId ) {
-        super(project, "Getting Projects From Gitlab", true);
+    public GetIssuesTask(@Nullable Project project, GitLabService gitLabService, GIPIssueObserver issueObserver, Integer projectId ) {
+        super(project, "Getting Issues From Gitlab", true);
         this.gitLabService = gitLabService;
-        this.projectObserver = projectObserver;
-        this.groupId = groupId;
+        this.issueObserver = issueObserver;
+        this.projectId = projectId;
     }
 
     @Override
@@ -37,19 +37,19 @@ public class GetProjectsTask extends Task.Backgroundable {
     }
 
     private void request( final int limit, final int page ) {
-        gitLabService.listGroupProjects(groupId, limit, page).subscribe(new Observer<List<GIPProject>>() {
+        gitLabService.listProjectIssues( projectId, limit, page ).subscribe(new Observer<List<GIPIssue>>() {
             @Override
             public void onSubscribe(Disposable d) {
 
             }
 
             @Override
-            public void onNext(List<GIPProject> projects) {
+            public void onNext(List<GIPIssue> projects) {
                 if ( projects == null ) {
                     return ;
                 }
 
-                projects.forEach(projectObserver::accept);
+                projects.forEach( issueObserver::accept );
 
                 if ( projects.size() >= limit ) {
                     request( limit, page + 1 );

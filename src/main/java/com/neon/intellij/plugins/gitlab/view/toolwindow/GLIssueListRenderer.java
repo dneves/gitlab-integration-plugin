@@ -1,8 +1,10 @@
 package com.neon.intellij.plugins.gitlab.view.toolwindow;
 
 import com.neon.intellij.plugins.gitlab.model.gitlab.GIPGroup;
+import com.neon.intellij.plugins.gitlab.model.gitlab.GIPIssue;
 import com.neon.intellij.plugins.gitlab.model.gitlab.GIPProject;
 import com.neon.intellij.plugins.gitlab.model.intellij.GLGroupNode;
+import com.neon.intellij.plugins.gitlab.model.intellij.GLIssueNode;
 import com.neon.intellij.plugins.gitlab.model.intellij.GLProjectNode;
 import info.clearthought.layout.TableLayout;
 import info.clearthought.layout.TableLayoutConstraints;
@@ -37,9 +39,9 @@ public class GLIssueListRenderer extends DefaultTreeCellRenderer {
             GIPGroup group = groupNode.getUserObject();
 
             sb.append( group.name );
-            if ( group.description != null && ! group.description.trim().isEmpty() ) {
-                sb.append( " - " ).append( group.description );
-            }
+//            if ( group.description != null && ! group.description.trim().isEmpty() ) {
+//                sb.append( " - " ).append( group.description );
+//            }
 
             if ( childCount > 0 ) {
                 sb.append( " ( " ).append(childCount).append( " )" );
@@ -50,20 +52,18 @@ public class GLIssueListRenderer extends DefaultTreeCellRenderer {
             GIPProject project = projectNode.getUserObject();
 
             sb.append(project.name);
-            if ( project.description != null && ! project.description.trim().isEmpty() ) {
-                sb.append( " - " ).append( project.description );
-            }
+//            if ( project.description != null && ! project.description.trim().isEmpty() ) {
+//                sb.append( " - " ).append( project.description );
+//            }
             if ( childCount > 0 ) {
                 sb.append( " ( " ).append(childCount).append( " )" );
             }
+        } else if ( node instanceof GLIssueNode) {
+            GLIssueNode issueNode = (GLIssueNode) node;
+            GIPIssue issue = issueNode.getUserObject();
 
-//            TODO: render issue node
-//        } else if ( node instanceof GLIssueNode) {
-//            GLIssueNode issueNode = (GLIssueNode) node;
-//            GitlabIssue issue = issueNode.getUserObject();
-//
-//            sb.append( "#" ).append( issue.getIid() ).append( ": " ).append( issue.getTitle() ).append( " ( " ).append( issue.getState() ).append( " )" );
-//
+            sb.append( "#" ).append( issue.iid ).append( ": " ).append( issue.title ).append( " ( " ).append( issue.title ).append( " )" );
+
         } else {
             sb.append( node.toString() );
             if ( childCount > 0 ) {

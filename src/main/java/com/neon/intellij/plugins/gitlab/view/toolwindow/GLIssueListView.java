@@ -3,26 +3,29 @@ package com.neon.intellij.plugins.gitlab.view.toolwindow;
 import com.intellij.ui.components.JBScrollPane;
 import com.intellij.ui.treeStructure.Tree;
 import com.neon.intellij.plugins.gitlab.GIPGroupObserver;
+import com.neon.intellij.plugins.gitlab.GIPIssueObserver;
 import com.neon.intellij.plugins.gitlab.GIPProjectObserver;
 import com.neon.intellij.plugins.gitlab.controller.GLIController;
 import com.neon.intellij.plugins.gitlab.model.gitlab.GIPGroup;
+import com.neon.intellij.plugins.gitlab.model.gitlab.GIPIssue;
 import com.neon.intellij.plugins.gitlab.model.gitlab.GIPProject;
+import com.neon.intellij.plugins.gitlab.model.gitlab.GIPUser;
 import com.neon.intellij.plugins.gitlab.model.intellij.GLGroupNode;
+import com.neon.intellij.plugins.gitlab.model.intellij.GLIssueNode;
 import com.neon.intellij.plugins.gitlab.model.intellij.GLProjectNode;
 import info.clearthought.layout.TableLayout;
 import info.clearthought.layout.TableLayoutConstraints;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
-public class GLIssueListView extends JPanel implements GIPGroupObserver, GIPProjectObserver {
+public class GLIssueListView extends JPanel implements GIPGroupObserver, GIPProjectObserver, GIPIssueObserver {
 
     private static final Logger LOGGER = Logger.getLogger( GLIssueListView.class.getName() );
-
-//    private static final Integer DEFAULT_NAMESPACE_ID = -1;
 
     private final FilteredTreeModel filteredModel = new FilteredTreeModel( new DefaultMutableTreeNode( "groups" ) );
 
@@ -42,21 +45,24 @@ public class GLIssueListView extends JPanel implements GIPGroupObserver, GIPProj
         this.add( scroller, new TableLayoutConstraints( 0, 0, 0, 0, TableLayout.FULL, TableLayout.FULL ) );
     }
 
-//    public < T > T[] getSelectedNodes( Class< T > clazz, Tree.NodeFilter< T > filter ) {
-//        return tree.getSelectedNodes( clazz, filter );
-//    }
+    public < T > T[] getSelectedNodes( Class< T > clazz, Tree.NodeFilter< T > filter ) {
+        return tree.getSelectedNodes( clazz, filter );
+    }
 
-//    public void filter( final String author, final String assignee, final String filter, final boolean showClosedIssues ) {
-//        filteredModel.setFilter( filter );
-//        filteredModel.setShowClosedIssues( showClosedIssues );
-//        filteredModel.setAuthor( author );
-//        filteredModel.setAssignee( assignee );
-//        ((DefaultTreeModel) filteredModel.getTreeModel() ).reload();
-//    }
+    public void filter(final GIPUser author, final GIPUser assignee, final String filter, final boolean showClosedIssues, final boolean showEmptyNodes ) {
+        filteredModel.setFilter( filter );
+        filteredModel.setShowClosedIssues( showClosedIssues );
+        filteredModel.setAuthor( author );
+        filteredModel.setAssignee( assignee );
+        filteredModel.setShowEmptyNodes( showEmptyNodes );
+        ((DefaultTreeModel) filteredModel.getTreeModel() ).reload();
+    }
 
 
 
     private final Map< Integer, GLGroupNode > groups = new HashMap<>();
+
+    private final Map< Integer, GLProjectNode > projects = new HashMap<>();
 
 
     @Override
@@ -89,8 +95,30 @@ public class GLIssueListView extends JPanel implements GIPGroupObserver, GIPProj
 
         GLGroupNode glGroupNode = groups.get(project.namespace.id);
         if ( glGroupNode != null ) {
-            glGroupNode.add( new GLProjectNode( project ) );
+            GLProjectNode glProjectNode = new GLProjectNode(project);
+            projects.put( project.id, glProjectNode );
+
+            glGroupNode.add(glProjectNode);
         }
+    }
+
+    @Override
+    public void accept(GIPIssue issue) {
+        LOGGER.info( "[issue] " + issue.id + ". " + issue.title );
+
+        GLProjectNode glProjectNode = projects.get(issue.project_id);
+        if ( glProjectNode == null ) {
+            GIPProject temp = new GIPProject();
+            temp.id = issue.project_id;
+
+            glProjectNode = new GLProjectNode( temp );
+
+            projects.put( issue.project_id, glProjectNode );
+        }
+
+        GLIssueNode glIssueNode = new GLIssueNode( issue );
+
+        glProjectNode.add( glIssueNode );
     }
 
 }

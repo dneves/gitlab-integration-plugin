@@ -4,9 +4,7 @@ import com.intellij.openapi.components.PersistentStateComponent;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.components.State;
 import com.intellij.openapi.components.Storage;
-import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.util.xmlb.XmlSerializerUtil;
-import com.intellij.util.xmlb.annotations.Transient;
 import org.jetbrains.annotations.Nullable;
 
 @State(
@@ -16,9 +14,6 @@ import org.jetbrains.annotations.Nullable;
         }
 )
 public class ConfigurableState implements PersistentStateComponent< ConfigurableState > {
-
-    @Transient
-    private static final Logger LOG = Logger.getInstance("gitlab");
 
     public String host;
 
@@ -70,4 +65,5 @@ public class ConfigurableState implements PersistentStateComponent< Configurable
     public void setIgnoreCertificateErrors(Boolean ignoreCertificateErrors) {
         this.ignoreCertificateErrors = ignoreCertificateErrors;
     }
+
 }

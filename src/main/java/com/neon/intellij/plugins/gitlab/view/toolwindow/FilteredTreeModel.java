@@ -1,8 +1,11 @@
 package com.neon.intellij.plugins.gitlab.view.toolwindow;
 
 import com.neon.intellij.plugins.gitlab.model.gitlab.GIPGroup;
+import com.neon.intellij.plugins.gitlab.model.gitlab.GIPIssue;
 import com.neon.intellij.plugins.gitlab.model.gitlab.GIPProject;
+import com.neon.intellij.plugins.gitlab.model.gitlab.GIPUser;
 import com.neon.intellij.plugins.gitlab.model.intellij.GLGroupNode;
+import com.neon.intellij.plugins.gitlab.model.intellij.GLIssueNode;
 import com.neon.intellij.plugins.gitlab.model.intellij.GLProjectNode;
 
 import javax.swing.event.TreeModelListener;
@@ -20,11 +23,13 @@ public final class FilteredTreeModel implements TreeModel {
 
     private String filter;
 
+    private boolean showEmptyNodes = false;
+
     private boolean showClosedIssues = false;
 
-    private String author;
+    private GIPUser author;
 
-    private String assignee;
+    private GIPUser assignee;
 
 
     public FilteredTreeModel( final TreeNode root ) {
@@ -40,6 +45,10 @@ public final class FilteredTreeModel implements TreeModel {
         return treeModel;
     }
 
+    public void setShowEmptyNodes(boolean showEmptyNodes) {
+        this.showEmptyNodes = showEmptyNodes;
+    }
+
     public void setFilter(final String filter) {
         this.filter = filter;
     }
@@ -48,11 +57,11 @@ public final class FilteredTreeModel implements TreeModel {
         this.showClosedIssues = showClosedIssues;
     }
 
-    public void setAuthor(String author) {
+    public void setAuthor(GIPUser author) {
         this.author = author;
     }
 
-    public void setAssignee(String assignee) {
+    public void setAssignee(GIPUser assignee) {
         this.assignee = assignee;
     }
 
@@ -62,38 +71,53 @@ public final class FilteredTreeModel implements TreeModel {
         if ( node instanceof GLGroupNode ) {
             GIPGroup group = ((GLGroupNode) node).getUserObject();
 
-            matches = group.name.toLowerCase().contains(filter.toLowerCase());
+            if ( ! showEmptyNodes ) {
+                matches = ((GLGroupNode) node).getChildCount() > 0;
+            }
+
+            matches &= group.name.toLowerCase().contains(filter.toLowerCase());
         } else if ( node instanceof GLProjectNode ) {
             GIPProject project = ((GLProjectNode) node).getUserObject();
 
-            matches = project.name.toLowerCase().contains(filter.toLowerCase());
-        }
-//        TODO: filter on issue node
-//        if ( node instanceof GLIssueNode) {
-//            title = ( ( GLIssueNode ) node ).getUserObject().getTitle();
-//            GLIssueState issueState = GLIssueState.fromValue(((GLIssueNode) node).getUserObject().getState());
-//
-//            GitlabUser authorUser = ((GLIssueNode) node).getUserObject().getAuthor();
-//            String author = GLIController.getLabel( authorUser );
-//            GitlabUser assigneeUser = ((GLIssueNode) node).getUserObject().getAssignee();
-//            String assignee = GLIController.getLabel( assigneeUser );
-//
-//            matches = ( issueState == null || (showClosedIssues || ! GLIssueState.CLOSED.equals( issueState ) ) );
-//            if ( this.author != null && ! this.author.trim().isEmpty() ) {
-//                matches &= this.author.equals( author );
-//            }
-//            if ( this.assignee != null && ! this.assignee.trim().isEmpty() ) {
-//                matches &= this.assignee.equals( assignee );
-//            }
-//
-//        }
+            if ( ! showEmptyNodes ) {
+                matches = ((GLProjectNode) node).getChildCount() > 0;
+            }
 
+            matches &= project.name.toLowerCase().contains(filter.toLowerCase());
+        } else if ( node instanceof GLIssueNode ) {
+            GIPIssue issue = ((GLIssueNode) node).getUserObject();
+
+//            by state
+            if ( ! showClosedIssues ) {
+                matches = ! "closed".equalsIgnoreCase( issue.state );
+            }
+
+//            by text
+            if ( filter != null && ! filter.trim().isEmpty() ) {
+                matches &= issue.title.toLowerCase().contains(filter.toLowerCase());
+            }
+
+//            by author
+            if ( author != null && author.id != null ) {
+                matches &= author.id.equals( issue.author.id );
+            }
+
+//            by assignee
+            if ( assignee != null && assignee.id != null ) {
+                matches &= issue.assignees != null && ! issue.assignees.isEmpty();
+                if ( matches ) {
+                    matches = issue.assignees.stream()
+                            .anyMatch(gipIssueAssignee -> assignee.id.equals( gipIssueAssignee.id ));
+                }
+            }
+        }
 
         int childCount = treeModel.getChildCount(node);
         for (int i = 0; i < childCount; i++) {
             Object child = treeModel.getChild(node, i);
             matches |= recursiveMatch( child );
         }
+
         return matches;
     }
 

@@ -10,4 +10,8 @@ public class GIPNamespace {
 
     public String full_path;
 
+    public String kind;
+
+    public Integer parent_id;
+
 }

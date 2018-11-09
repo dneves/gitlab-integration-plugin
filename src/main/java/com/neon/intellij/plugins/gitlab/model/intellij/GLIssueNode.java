@@ -1,11 +1,11 @@
 package com.neon.intellij.plugins.gitlab.model.intellij;
 
-public class GLIssueNode
-//        extends GLTreeNode< GitlabIssue >
-{
+import com.neon.intellij.plugins.gitlab.model.gitlab.GIPIssue;
 
-//    public GLIssueNode( GitlabIssue issue ) {
-//        super( issue, false );
-//    }
+public class GLIssueNode extends GLTreeNode<GIPIssue> {
+
+    public GLIssueNode( GIPIssue issue ) {
+        super( issue, false );
+    }
 
 }

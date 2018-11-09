@@ -1,24 +1,33 @@
 package com.neon.intellij.plugins.gitlab.view;
 
 import com.neon.intellij.plugins.gitlab.GIPGroupObserver;
+import com.neon.intellij.plugins.gitlab.GIPIssueObserver;
 import com.neon.intellij.plugins.gitlab.GIPProjectObserver;
+import com.neon.intellij.plugins.gitlab.GIPUserObserver;
 import com.neon.intellij.plugins.gitlab.controller.GLIController;
 import com.neon.intellij.plugins.gitlab.model.gitlab.GIPGroup;
+import com.neon.intellij.plugins.gitlab.model.gitlab.GIPIssue;
 import com.neon.intellij.plugins.gitlab.model.gitlab.GIPProject;
+import com.neon.intellij.plugins.gitlab.model.gitlab.GIPUser;
 import com.neon.intellij.plugins.gitlab.view.toolwindow.GLIssueListView;
+import com.neon.intellij.plugins.gitlab.view.toolwindow.GLIssuesFilterView;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 
-public class GitLabView extends JPanel implements GIPGroupObserver, GIPProjectObserver {
+public class GitLabView extends JPanel implements GIPGroupObserver, GIPProjectObserver, GIPIssueObserver, GIPUserObserver {
 
     private final GLIssueListView glIssueListView ;
 
+    private final GLIssuesFilterView glIssuesFilterView;
+
     public GitLabView( final GLIController controller ) {
         this.glIssueListView = new GLIssueListView( controller );
+        this.glIssuesFilterView = new GLIssuesFilterView( glIssueListView );
 
-        this.setLayout( new BorderLayout() );
-//        this.add( filterView, BorderLayout.NORTH );
+        this.setLayout( new BorderLayout( 10, 10 ) );
+        this.add( glIssuesFilterView, BorderLayout.NORTH );
 //        this.add( buildActionsPanel( this ), BorderLayout.WEST );
         this.add( glIssueListView, BorderLayout.CENTER );
     }
@@ -34,13 +43,26 @@ public class GitLabView extends JPanel implements GIPGroupObserver, GIPProjectOb
         glIssueListView.accept( project );
     }
 
+    @Override
+    public void accept(GIPIssue issue) {
+        glIssueListView.accept( issue );
+    }
+
+    @Override
+    public void onStart() {
+        glIssuesFilterView.onStart();
+    }
+
+    @Override
+    public void accept(List<GIPUser> users) {
+        glIssuesFilterView.accept( users );
+    }
 }
 
 //    private final GLIController controller;
 //
 //    private final GLIssuesFilterView filterView;
 //
-
 //
 //    public GitLabView( final GLIController controller ) {
 //        this.controller = controller;
