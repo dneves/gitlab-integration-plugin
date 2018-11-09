@@ -9,9 +9,11 @@ import com.intellij.ui.content.ContentFactory;
 import com.neon.intellij.plugins.gitlab.*;
 import com.neon.intellij.plugins.gitlab.controller.editor.GLIssueVirtualFile;
 import com.neon.intellij.plugins.gitlab.GetUsersTask;
+import com.neon.intellij.plugins.gitlab.model.gitlab.GIPIssue;
 import com.neon.intellij.plugins.gitlab.view.GitLabView;
 
 import javax.swing.*;
+import java.io.IOException;
 import java.util.function.Supplier;
 import java.util.logging.Logger;
 
@@ -36,7 +38,49 @@ public class GLIController {
     public void run() {
         final GitLabView view = new GitLabView( this );
 
-//        final GitLabService gitLabService = new GitLabServiceSupplier(new ConnectionPropertiesSupplier()).get();
+        refresh( view );
+
+        ContentFactory contentFactory = ContentFactory.SERVICE.getInstance();
+        Content content = contentFactory.createContent( view, "", false );
+        toolWindow.getContentManager().addContent( content );
+    }
+
+    public void openEditor( final GIPIssue issue ) {
+        jbFacade.openEditor( new GLIssueVirtualFile( this, issue ) );
+    }
+
+    public void closeEditor( final GLIssueVirtualFile vf ) {
+        jbFacade.closeEditor(vf);
+    }
+
+    public GIPIssue saveIssue(final GIPIssue issue) throws IOException {
+//        TODO: persist issue
+        if ( issue.id <= 0 ) {
+//            return glFacade.createIssue(issue);
+        } else {
+//            return glFacade.editIssue(issue);
+        }
+        return issue;
+    }
+
+    public GIPIssue deleteIssue(final GIPIssue issue) throws IOException {
+//        TODO: delete gitlab issue
+        return issue;
+//        return glFacade.closeIssue( issue );
+    }
+//
+    public GIPIssue changeState(final GIPIssue issue, final String newState) throws IOException {
+//        TODO: switch issue state
+//        if ( GLIssueState.REOPEN.equals( newState ) ) {
+//            return glFacade.openIssue(issue);
+//        } else if ( GLIssueState.CLOSED.equals( newState ) ) {
+//            return glFacade.closeIssue(issue);
+//        }
+        return issue;
+    }
+//
+    public void refresh(GitLabView view) {
+        //        final GitLabService gitLabService = new GitLabServiceSupplier(new ConnectionPropertiesSupplier()).get();
         final GitLabService gitLabService = new GitLabServiceSupplier(new Supplier<ConnectionPropertiesSupplier.ConnectionProperties>() {
             @Override
             public ConnectionPropertiesSupplier.ConnectionProperties get() {
@@ -62,45 +106,7 @@ public class GLIController {
         ProgressManager.getInstance().run( new GetGroupsTask( project, gitLabService, groupObserver ) );
 
         ProgressManager.getInstance().run( new GetUsersTask( project, gitLabService, view ) );
-
-        ContentFactory contentFactory = ContentFactory.SERVICE.getInstance();
-        Content content = contentFactory.createContent( view, "", false );
-        toolWindow.getContentManager().addContent( content );
     }
-
-//    public void openEditor( final GitlabIssue issue ) {
-//        jbFacade.openEditor( new GLIssueVirtualFile( this, issue ) );
-//    }
-
-    public void closeEditor( final GLIssueVirtualFile vf ) {
-        jbFacade.closeEditor(vf);
-    }
-
-//    public GitlabIssue saveIssue(final GitlabIssue issue) throws IOException {
-//        if ( issue.getId() <= 0 ) {
-//            return glFacade.createIssue(issue);
-//        } else {
-//            return glFacade.editIssue(issue);
-//        }
-//    }
-//
-//    public GitlabIssue deleteIssue(final GitlabIssue issue) throws IOException {
-//        return glFacade.closeIssue( issue );
-//    }
-//
-//    public GitlabIssue changeState(final GitlabIssue issue, final GLIssueState newState) throws IOException {
-//        if ( GLIssueState.REOPEN.equals( newState ) ) {
-//            return glFacade.openIssue(issue);
-//        } else if ( GLIssueState.CLOSED.equals( newState ) ) {
-//            return glFacade.closeIssue(issue);
-//        }
-//        return issue;
-//    }
-//
-//    public void refresh() {
-//        Object[] properties = getConnectionProperties();
-//        glFacade.reload( (String) properties[0], (String) properties[1], (Boolean) properties[2] );
-//    }
 
 
 }

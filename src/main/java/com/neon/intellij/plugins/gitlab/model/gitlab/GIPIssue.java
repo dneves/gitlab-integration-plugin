@@ -4,7 +4,7 @@ import java.util.List;
 
 public class GIPIssue {
 
-    public String id;
+    public Integer id;
 
     public Integer iid;
 

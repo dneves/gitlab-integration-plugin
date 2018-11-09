@@ -48,10 +48,10 @@ public class GLIssuesFilterView extends JPanel implements GIPUserObserver {
         assignee.addActionListener(actionListener);
 
         author.setRenderer((list, value, index, isSelected, cellHasFocus) ->
-                new JLabel( value.name != null && !value.name.trim().isEmpty() ? value.name :
+                new JLabel( value == null ? " " : value.name != null && !value.name.trim().isEmpty() ? value.name :
                         value.username != null && ! value.username.trim().isEmpty() ? value.username : " " ));
         assignee.setRenderer((list, value, index, isSelected, cellHasFocus) ->
-                new JLabel( value.name != null && !value.name.trim().isEmpty() ? value.name :
+                new JLabel( value == null ? " " : value.name != null && !value.name.trim().isEmpty() ? value.name :
                         value.username != null && ! value.username.trim().isEmpty() ? value.username : " " ));
 
     }

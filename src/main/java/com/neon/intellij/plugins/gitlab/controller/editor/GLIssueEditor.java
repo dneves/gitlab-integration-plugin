@@ -1,22 +1,22 @@
 package com.neon.intellij.plugins.gitlab.controller.editor;
 
+import com.neon.intellij.plugins.gitlab.view.issues.GLIssueEditorView;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 
 public class GLIssueEditor extends GLAbstractFileEditor {
 
-//    private final GLIssueEditorView view;
+    private final GLIssueEditorView view;
 
     public GLIssueEditor(final GLIssueVirtualFile vf) {
-//        view = new GLIssueEditorView( vf );
+        view = new GLIssueEditorView( vf );
     }
 
     @NotNull
     @Override
     public JComponent getComponent() {
-        return null;
-//        return view;
+        return view;
     }
 
     @NotNull

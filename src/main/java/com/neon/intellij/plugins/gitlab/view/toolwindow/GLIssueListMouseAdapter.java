@@ -1,6 +1,8 @@
 package com.neon.intellij.plugins.gitlab.view.toolwindow;
 
 import com.neon.intellij.plugins.gitlab.controller.GLIController;
+import com.neon.intellij.plugins.gitlab.model.intellij.GLIssueNode;
+import com.neon.intellij.plugins.gitlab.model.intellij.GLProjectNode;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -36,32 +38,32 @@ public class GLIssueListMouseAdapter extends MouseAdapter {
     }
 
     private void contextMenu( final DefaultMutableTreeNode node, final int x, final int y ) {
-//        if ( node instanceof GLProjectNode) {
-//            GLProjectNode projectNode = (GLProjectNode) node;
-//
-//            JPopupMenu popup = new GLProjectPopup( controller, this, projectNode );
-//            popup.show( tree, x, y );
-//
-//        } else if ( node instanceof GLIssueNode) {
-//            GLIssueNode issueNode = (GLIssueNode) node;
-//
-//            JPopupMenu popup = new GLIssuePopup( controller, issueNode );
-//            popup.show( tree, x, y );
-//        }
+        if ( node instanceof GLProjectNode) {
+            GLProjectNode projectNode = (GLProjectNode) node;
+
+            JPopupMenu popup = new GLProjectPopup( controller, this, projectNode );
+            popup.show( tree, x, y );
+
+        } else if ( node instanceof GLIssueNode) {
+            GLIssueNode issueNode = (GLIssueNode) node;
+
+            JPopupMenu popup = new GLIssuePopup( controller, issueNode );
+            popup.show( tree, x, y );
+        }
     }
 
     public void doubleClick( final DefaultMutableTreeNode node ) {
-//        if ( node instanceof GLProjectNode ) {
+        if ( node instanceof GLProjectNode ) {
 //            if ( node.getChildCount() > 0 ) {
 //                return ;
 //            }
 //
 //            final GLProjectNode projectNode = (GLProjectNode) node;
 //            ProgressManager.getInstance().run( new GetIssuesTask( controller, Arrays.asList( projectNode ), taskList ) );
-//        } else if ( node instanceof GLIssueNode ) {
-//            GLIssueNode issueNode = (GLIssueNode) node;
-//            controller.openEditor( issueNode.getUserObject() );
-//        }
+        } else if ( node instanceof GLIssueNode ) {
+            GLIssueNode issueNode = (GLIssueNode) node;
+            controller.openEditor( issueNode.getUserObject() );
+        }
     }
 
 }
