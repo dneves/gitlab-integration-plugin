@@ -80,14 +80,7 @@ public class GLIController {
     }
 //
     public void refresh(GitLabView view) {
-        //        final GitLabService gitLabService = new GitLabServiceSupplier(new ConnectionPropertiesSupplier()).get();
-        final GitLabService gitLabService = new GitLabServiceSupplier(new Supplier<ConnectionPropertiesSupplier.ConnectionProperties>() {
-            @Override
-            public ConnectionPropertiesSupplier.ConnectionProperties get() {
-                return new ConnectionPropertiesSupplier.ConnectionProperties( "https://git.impresa.pt/", "uz2_ypRY2FJj2Mxzt8eN", true );
-            }
-        }).get();
-
+        final GitLabService gitLabService = new GitLabServiceSupplier(new ConnectionPropertiesSupplier()).get();
 
         GIPGroupObserver groupObserver = group -> {
             SwingUtilities.invokeLater(() -> view.accept( group ));
