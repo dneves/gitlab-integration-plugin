@@ -10,9 +10,6 @@ import info.clearthought.layout.TableLayoutConstraints;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.IOException;
 
 public class GLIssueEditorView extends JPanel implements EditableView<GIPIssue, GIPIssue> {
 
@@ -46,23 +43,11 @@ public class GLIssueEditorView extends JPanel implements EditableView<GIPIssue, 
         textDescription.setWrapStyleWord( true );
         textDescription.setLineWrap( true );
 
-        buttonSave.addActionListener( new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                virtualFile.setIssue( save() );
-                try {
-                    virtualFile.saveAndClose();
-                } catch (IOException e1) {
-                    LOG.error( e1 );
-                }
-            }
+        buttonSave.addActionListener(e -> {
+            virtualFile.setIssue( save() );
+            virtualFile.saveAndClose();
         });
-        buttonClose.addActionListener( new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                virtualFile.close();
-            }
-        });
+        buttonClose.addActionListener(e -> virtualFile.close());
     }
 
     private void setupLayout() {

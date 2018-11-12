@@ -14,7 +14,7 @@ public class GitLabServiceSupplier implements Supplier< GitLabService > {
 
     @Override
     public GitLabService get() {
-        Retrofit retrofit = new RetrofitSupplier( connectionPropertiesSupplier ).get();
+        Retrofit retrofit = new RetrofitSupplier(connectionPropertiesSupplier).get();
 
         return retrofit.create(GitLabService.class);
     }

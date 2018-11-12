@@ -14,7 +14,9 @@ public class GitLabToolWindowFactory implements ToolWindowFactory {
 
     @Override
     public void createToolWindowContent(@NotNull Project project, @NotNull ToolWindow toolWindow) {
-        GLIController controller = new GLIController( project, toolWindow );
+        final GitLabServiceSupplier gitLabServiceSupplier = new GitLabServiceSupplier(new ConnectionPropertiesSupplier());
+
+        GLIController controller = new GLIController( project, toolWindow, gitLabServiceSupplier );
         controller.run();
     }
 

@@ -2,11 +2,7 @@ package com.neon.intellij.plugins.gitlab.view;
 
 import com.intellij.icons.AllIcons;
 import com.intellij.openapi.actionSystem.*;
-import com.neon.intellij.plugins.gitlab.GIPGroupObserver;
-import com.neon.intellij.plugins.gitlab.GIPIssueObserver;
-import com.neon.intellij.plugins.gitlab.GIPProjectObserver;
-import com.neon.intellij.plugins.gitlab.GIPUserObserver;
-import com.neon.intellij.plugins.gitlab.controller.GLIController;
+import com.neon.intellij.plugins.gitlab.*;
 import com.neon.intellij.plugins.gitlab.model.gitlab.GIPGroup;
 import com.neon.intellij.plugins.gitlab.model.gitlab.GIPIssue;
 import com.neon.intellij.plugins.gitlab.model.gitlab.GIPProject;
@@ -25,25 +21,31 @@ public class GitLabView extends JPanel implements GIPGroupObserver, GIPProjectOb
 
     private final GLIssuesFilterView glIssuesFilterView;
 
-    public GitLabView( final GLIController controller ) {
-        this.glIssueListView = new GLIssueListView( controller );
+    public GitLabView(final OpenIssueEditorAction openIssueEditorAction,
+                      final RefreshProjectIssuesAction refreshProjectIssuesAction,
+                      final DeleteIssueAction deleteIssueAction,
+                      final ChangeIssueStateAction changeIssueStateAction) {
+        this.glIssueListView = new GLIssueListView( openIssueEditorAction, refreshProjectIssuesAction,
+                deleteIssueAction, changeIssueStateAction);
         this.glIssuesFilterView = new GLIssuesFilterView( glIssueListView );
 
         this.setLayout( new BorderLayout( 5, 5 ) );
         this.add( glIssuesFilterView, BorderLayout.NORTH );
-        this.add( buildActionsPanel( controller, this ), BorderLayout.WEST );
+        this.add( buildActionsPanel( this, openIssueEditorAction, refreshProjectIssuesAction ), BorderLayout.WEST );
         this.add( glIssueListView, BorderLayout.CENTER );
     }
 
 
-    private Component buildActionsPanel( GLIController controller , final JComponent target ) {
+    private Component buildActionsPanel( final JComponent target,
+                                         final OpenIssueEditorAction openIssueEditorAction,
+                                         final RefreshProjectIssuesAction refreshProjectIssuesAction ) {
         final ActionManager actionManager = ActionManager.getInstance();
 
         final DefaultActionGroup actionGroup = new DefaultActionGroup();
         actionGroup.add( new AnAction( "Refresh All", "Refresh connection settings and projects list", AllIcons.Actions.Refresh ) {
             @Override
             public void actionPerformed(AnActionEvent anActionEvent) {
-                controller.refresh( GitLabView.this );
+                refreshProjectIssuesAction.accept( null );
             }
         });
         actionGroup.addSeparator();
@@ -57,7 +59,7 @@ public class GitLabView extends JPanel implements GIPGroupObserver, GIPProjectOb
 
                     GIPIssue issue = new GIPIssue();
                     issue.project_id = project.id;
-                    controller.openEditor( issue );
+                    openIssueEditorAction.accept( issue );
                 }
             }
         });

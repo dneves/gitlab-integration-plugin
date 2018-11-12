@@ -4,8 +4,6 @@ import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.progress.Task;
 import com.intellij.openapi.project.Project;
-import com.neon.intellij.plugins.gitlab.GIPUserObserver;
-import com.neon.intellij.plugins.gitlab.GitLabService;
 import com.neon.intellij.plugins.gitlab.model.gitlab.GIPUser;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;

@@ -2,10 +2,7 @@ package com.neon.intellij.plugins.gitlab.view.toolwindow;
 
 import com.intellij.ui.components.JBScrollPane;
 import com.intellij.ui.treeStructure.Tree;
-import com.neon.intellij.plugins.gitlab.GIPGroupObserver;
-import com.neon.intellij.plugins.gitlab.GIPIssueObserver;
-import com.neon.intellij.plugins.gitlab.GIPProjectObserver;
-import com.neon.intellij.plugins.gitlab.controller.GLIController;
+import com.neon.intellij.plugins.gitlab.*;
 import com.neon.intellij.plugins.gitlab.model.gitlab.GIPGroup;
 import com.neon.intellij.plugins.gitlab.model.gitlab.GIPIssue;
 import com.neon.intellij.plugins.gitlab.model.gitlab.GIPProject;
@@ -31,9 +28,13 @@ public class GLIssueListView extends JPanel implements GIPGroupObserver, GIPProj
 
     private final Tree tree = new Tree( filteredModel );
 
-    public GLIssueListView( final GLIController controller ) {
+    public GLIssueListView(final OpenIssueEditorAction openIssueEditorAction,
+                           final RefreshProjectIssuesAction refreshProjectIssuesAction,
+                           final DeleteIssueAction deleteIssueAction,
+                           final ChangeIssueStateAction changeIssueStateAction) {
         tree.setCellRenderer( new GLIssueListRenderer() );
-        tree.addMouseListener( new GLIssueListMouseAdapter( controller, this, tree ) );
+        tree.addMouseListener( new GLIssueListMouseAdapter( openIssueEditorAction, refreshProjectIssuesAction,
+                deleteIssueAction, changeIssueStateAction, tree ) );
 //        tree.setRootVisible( false );
 
         this.setLayout( new TableLayout(

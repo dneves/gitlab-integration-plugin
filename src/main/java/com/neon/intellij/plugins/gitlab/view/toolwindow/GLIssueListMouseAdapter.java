@@ -1,6 +1,9 @@
 package com.neon.intellij.plugins.gitlab.view.toolwindow;
 
-import com.neon.intellij.plugins.gitlab.controller.GLIController;
+import com.neon.intellij.plugins.gitlab.ChangeIssueStateAction;
+import com.neon.intellij.plugins.gitlab.DeleteIssueAction;
+import com.neon.intellij.plugins.gitlab.OpenIssueEditorAction;
+import com.neon.intellij.plugins.gitlab.RefreshProjectIssuesAction;
 import com.neon.intellij.plugins.gitlab.model.intellij.GLIssueNode;
 import com.neon.intellij.plugins.gitlab.model.intellij.GLProjectNode;
 
@@ -12,15 +15,23 @@ import java.awt.event.MouseEvent;
 
 public class GLIssueListMouseAdapter extends MouseAdapter {
 
-    private final GLIController controller;
-
-    private final GLIssueListView taskList;
-
     private final JTree tree;
 
-    public GLIssueListMouseAdapter(final GLIController controller, final GLIssueListView taskList, final JTree tree) {
-        this.controller = controller;
-        this.taskList = taskList;
+    private final OpenIssueEditorAction openIssueEditorAction;
+    private final RefreshProjectIssuesAction refreshProjectIssuesAction;
+    private final DeleteIssueAction deleteIssueAction;
+    private final ChangeIssueStateAction changeIssueStateAction;
+
+    public GLIssueListMouseAdapter(final OpenIssueEditorAction openIssueEditorAction,
+                                   final RefreshProjectIssuesAction refreshProjectIssuesAction,
+                                   final DeleteIssueAction deleteIssueAction,
+                                   final ChangeIssueStateAction changeIssueStateAction,
+                                   final JTree tree)
+    {
+        this.openIssueEditorAction = openIssueEditorAction;
+        this.refreshProjectIssuesAction = refreshProjectIssuesAction;
+        this.deleteIssueAction = deleteIssueAction;
+        this.changeIssueStateAction = changeIssueStateAction;
         this.tree = tree;
     }
 
@@ -41,28 +52,23 @@ public class GLIssueListMouseAdapter extends MouseAdapter {
         if ( node instanceof GLProjectNode) {
             GLProjectNode projectNode = (GLProjectNode) node;
 
-            JPopupMenu popup = new GLProjectPopup( controller, this, projectNode );
+            JPopupMenu popup = new GLProjectPopup( projectNode, openIssueEditorAction, refreshProjectIssuesAction );
             popup.show( tree, x, y );
 
         } else if ( node instanceof GLIssueNode) {
             GLIssueNode issueNode = (GLIssueNode) node;
 
-            JPopupMenu popup = new GLIssuePopup( controller, issueNode );
+            JPopupMenu popup = new GLIssuePopup( issueNode, openIssueEditorAction, deleteIssueAction, changeIssueStateAction );
             popup.show( tree, x, y );
         }
     }
 
-    public void doubleClick( final DefaultMutableTreeNode node ) {
+    private void doubleClick( final DefaultMutableTreeNode node ) {
         if ( node instanceof GLProjectNode ) {
-//            if ( node.getChildCount() > 0 ) {
-//                return ;
-//            }
-//
-//            final GLProjectNode projectNode = (GLProjectNode) node;
-//            ProgressManager.getInstance().run( new GetIssuesTask( controller, Arrays.asList( projectNode ), taskList ) );
+            refreshProjectIssuesAction.accept((GLProjectNode) node);
         } else if ( node instanceof GLIssueNode ) {
             GLIssueNode issueNode = (GLIssueNode) node;
-            controller.openEditor( issueNode.getUserObject() );
+            openIssueEditorAction.accept( issueNode.getUserObject() );
         }
     }
 
