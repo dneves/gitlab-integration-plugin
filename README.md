@@ -19,9 +19,9 @@ You'll need the host and your API key from your gitlab (which you can find under
 
 ## Change notes
 
-( in development ) <b>v1.0.7</b><br>
+<b>v1.1.0</b><br>
 <ul>
-    <li>to be announced</li>
+    <li>Redone plugin to use Gitlab API v4</li>
 </ul>
 ( 2014-10-14 ) <b>v1.0.6</b><br>
 <ul>

@@ -1,0 +1,105 @@
+<idea-plugin version="2">
+  <id>com.neon.intellij.plugins.gitlab</id>
+  <name>GitLab Integration Plugin</name>
+  <version>1.0.6</version>
+  <vendor email="diogo.sousa.neves@gmail.com" url="">Diogo Neves</vendor>
+
+  <description><![CDATA[
+    GitLab Integration plugin:<br>
+    <br>
+    Lets you interact with gitlab from within your IDE.<br>
+    <br>
+    Features:<br>
+    <ul>
+        <li>List projects (by namespaces) and their issues</li>
+        <li>Filter issues by author, assignee or custom text</li>
+        <li>Re-open / close issues (right click)</li>
+        <li>Edit issues (double click)</li>
+    </ul>
+    <br>
+    Please, leave a comment or drop me an email with any issues/reports.<br>
+    <br>
+    After plugin install, go to IDE preferences, and look for Gitlab Integration.<br>
+    You'll need the host and your API key from your gitlab (which you can find under Profile Settings -> Account)<br>
+    ]]></description>
+
+  <change-notes><![CDATA[
+  ( in development ) <b>v1.0.7</b><br>
+    <ul>
+        <li>Java 8 requirement</li>
+        <li>gitlab v4 api support</li>
+    </ul>
+    ( 2014-10-14 ) <b>v1.0.6</b><br>
+    <ul>
+        <li>Java 6 / 7 versions</li>
+        <li>displaying issue Iid instead of Id</li>
+    </ul>
+  ( 2014-07-08 ) <b>v1.0.5</b><br>
+    <ul>
+        <li>Fixed possible ssl error (ignoring certificate errors by default)</li>
+    </ul>
+  ( 2014-07-07 ) <b>v1.0.4</b><br>
+    <ul>
+        <li>bug fixes</li>
+    </ul>
+    ( 2014-06-23 ) <b>v1.0.3</b><br>
+    <ul>
+        <li>Issues list filter</li>
+        <li>minor improvements</li>
+    </ul>
+    ( 2014-04-29 ) <b>v1.0.2</b><br>
+    <ul>
+        <li>Set plugin dependency to build 133 (IntelliJ IDEA 13, PyCharm 3.1, WebStorm 7, PhpStorm 7) - intellij 13 was the first to support java7</li>
+    </ul>
+    ( 2014-04-29 ) <b>v1.0.1</b><br>
+    <ul>
+        <li>Improves in the issue editing view</li>
+    </ul>
+    ( 2014-04-25 ) <b>v1.0</b><br>
+    <ul>
+        <li>Plugin creation</li>
+    </ul>
+    ]]>
+  </change-notes>
+
+  <!-- please see http://confluence.jetbrains.com/display/IDEADEV/Build+Number+Ranges for description -->
+  <idea-version since-build="162"/>
+
+  <!-- please see http://confluence.jetbrains.com/display/IDEADEV/Plugin+Compatibility+with+IntelliJ+Platform+Products
+       on how to target different products -->
+  <depends>com.intellij.modules.lang</depends>
+
+  <extensions defaultExtensionNs="com.intellij">
+    <!-- Add your extensions here -->
+
+      <!-- Configuration state service ( persistable settings ) -->
+      <applicationService serviceInterface="com.neon.intellij.plugins.gitlab.model.intellij.ConfigurableState"
+                          serviceImplementation="com.neon.intellij.plugins.gitlab.model.intellij.ConfigurableState"/>
+
+      <!-- provider for the configurable instance ( configuration settings ) -->
+      <applicationConfigurable id="GitLabConfigurableProvider" provider="com.neon.intellij.plugins.gitlab.view.configurable.GitLabConfigurableProvider" />
+
+      <!-- plugin tool window -->
+      <toolWindow id="GitLabIntegration" anchor="bottom"
+
+                  factoryClass="com.neon.intellij.plugins.gitlab.GitLabToolWindowFactory"/>
+    <!--icon="/com/neon/intellij/plugins/gitlab/icons/gitlab.jpg"-->
+
+  </extensions>
+
+  <application-components>
+    <!-- Add your application components here -->
+      <component>
+          <implementation-class>com.neon.intellij.plugins.gitlab.controller.editor.GLEditorProvider</implementation-class>
+      </component>
+  </application-components>
+
+  <project-components>
+    <!-- Add your project components here -->
+  </project-components>
+
+  <actions>
+    <!-- Add your actions here -->
+  </actions>
+
+</idea-plugin>
