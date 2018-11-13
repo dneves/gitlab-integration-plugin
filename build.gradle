@@ -20,6 +20,13 @@ intellij {
     plugins 'coverage'
 
 //    pluginName 'GitLab Integration Plugin'
+
+    intellij.updateSinceUntilBuild false
+}
+
+publishPlugin {
+    username intellijPublishUsername
+    password intellijPublishPassword
 }
 
 group 'org.jetbrains'
