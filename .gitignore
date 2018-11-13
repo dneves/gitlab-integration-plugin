@@ -3,4 +3,7 @@ target/
 .idea/
 out/
 gitlab-integration-plugin.zip
-
+.gradle/
+build/
+gitlab-integration-plugin.ipr
+gitlab-integration-plugin.iws
