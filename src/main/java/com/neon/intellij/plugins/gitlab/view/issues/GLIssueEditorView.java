@@ -77,14 +77,15 @@ public class GLIssueEditorView extends JPanel implements EditableView<GIPIssue, 
 
 
         TableLayout layout = new TableLayout(
-                new double[]{TableLayout.FILL},
-                new double[]{TableLayout.FILL, TableLayout.MINIMUM}
+                new double[]{ 5, TableLayout.FILL, 5 },
+                new double[]{ TableLayout.FILL, TableLayout.MINIMUM }
         );
         layout.setHGap( 5 );
         layout.setVGap( 5 );
         this.setLayout( layout );
-        this.add( fieldsPanel, new TableLayoutConstraints(0, 0, 0, 0 ) );
-        this.add( panelBottom, new TableLayoutConstraints(0, 1, 0, 1, TableLayout.CENTER, TableLayout.CENTER) );
+
+        this.add( fieldsPanel, new TableLayoutConstraints(1, 0, 1, 0 ) );
+        this.add( panelBottom, new TableLayoutConstraints(1, 1, 1, 1, TableLayout.CENTER, TableLayout.CENTER) );
     }
 
     private void clear() {
