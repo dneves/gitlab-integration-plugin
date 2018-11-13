@@ -63,7 +63,7 @@ public class GLIController {
     }
 
     private GIPIssue saveIssue( GIPIssue issue ) {
-        if ( issue.id <= 0 ) {
+        if ( issue.id == null || issue.id <= 0 ) {
             return gitLabServiceSupplier
                     .get()
                     .createIssue( issue.project_id, issue.title )

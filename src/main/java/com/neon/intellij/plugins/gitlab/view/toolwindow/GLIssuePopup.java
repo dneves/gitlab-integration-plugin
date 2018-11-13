@@ -42,9 +42,9 @@ public class GLIssuePopup extends JPopupMenu {
             });
             statesMenu.add(reopen);
         } else {
-            JRadioButtonMenuItem closed = new JRadioButtonMenuItem( "Closed", AllIcons.Actions.Close );
+            JRadioButtonMenuItem closed = new JRadioButtonMenuItem( "Close", AllIcons.Actions.Close );
             closed.addActionListener(e -> {
-                GIPIssue savedIssue = changeIssueStateAction.apply(issue, "closed");
+                GIPIssue savedIssue = changeIssueStateAction.apply(issue, "close");
                 issue.state = savedIssue.state;
             });
             statesMenu.add(closed);
