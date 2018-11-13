@@ -27,8 +27,7 @@ public class GLIssuePopup extends JPopupMenu {
 
         JMenuItem delete = new JMenuItem( "Delete", AllIcons.Actions.Delete );
         delete.addActionListener(e -> {
-            GIPIssue deletedIssue = deleteIssueAction.apply(issue);
-            issue.state = deletedIssue.state;
+            deleteIssueAction.accept(issue);
         });
         this.add( delete );
 

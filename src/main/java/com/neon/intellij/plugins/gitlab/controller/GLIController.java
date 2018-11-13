@@ -62,32 +62,52 @@ public class GLIController {
         jbFacade.closeEditor(vf);
     }
 
+    private void refreshSelectedProjectNodes() {
+        GLProjectNode[] glProjectNodes = view.getSelectedNodes(GLProjectNode.class, null);
+        if ( glProjectNodes != null && glProjectNodes.length > 0 ) {
+            for (GLProjectNode glProjectNode : glProjectNodes) {
+                refresh( glProjectNode );
+            }
+        }
+    }
+
     private GIPIssue saveIssue( GIPIssue issue ) {
+        GIPIssue response;
         if ( issue.id == null || issue.id <= 0 ) {
-            return gitLabServiceSupplier
+            response = gitLabServiceSupplier
                     .get()
-                    .createIssue( issue.project_id, issue.title )
+                    .createIssue(issue.project_id, issue.title, issue.description)
                     .blockingSingle();
         } else {
-            return gitLabServiceSupplier
+            response = gitLabServiceSupplier
                     .get()
                     .updateIssue( issue.project_id, issue.iid, issue.title, issue.description, issue.state )
                     .blockingSingle();
         }
+
+        refreshSelectedProjectNodes();
+
+        return response;
     }
 
-    private GIPIssue deleteIssue(final GIPIssue issue) {
-        return gitLabServiceSupplier
+    private void deleteIssue(final GIPIssue issue) {
+        gitLabServiceSupplier
                 .get()
-                .deleteIssue( issue.project_id, issue.iid )
-                .blockingSingle();
+                .deleteIssue(issue.project_id, issue.iid)
+                .blockingAwait();
+
+        refreshSelectedProjectNodes();
     }
 
     private GIPIssue changeState(final GIPIssue issue, final String newState) {
-        return gitLabServiceSupplier
+        GIPIssue response = gitLabServiceSupplier
                 .get()
-                .changeIssueState( issue.project_id, issue.iid, newState )
+                .changeIssueState(issue.project_id, issue.iid, newState)
                 .blockingSingle();
+
+        refreshSelectedProjectNodes();
+
+        return response;
     }
 //
     private void refresh(GIPGroupObserver viewGroupObserver,
@@ -118,12 +138,13 @@ public class GLIController {
     private void updateProjectIssues( GitLabService gitLabService, GIPProject project,
                                       GIPProjectObserver viewProjectObserver,
                                       GIPIssueObserver viewIssueObserver ) {
-        SwingUtilities.invokeLater(() ->
-                viewProjectObserver.onStartProjectUpdate( project ) );
+        SwingUtilities.invokeLater(() -> {
+            viewProjectObserver.onStartProjectUpdate( project );
 
-        GetIssuesTask getIssuesTask = new GetIssuesTask(GLIController.this.project, gitLabService,
-                issue -> SwingUtilities.invokeLater(() -> viewIssueObserver.accept(issue)), project.id);
-        ProgressManager.getInstance().run(getIssuesTask);
+            GetIssuesTask getIssuesTask = new GetIssuesTask(GLIController.this.project, gitLabService,
+                    issue -> SwingUtilities.invokeLater(() -> viewIssueObserver.accept(issue)), project.id);
+            ProgressManager.getInstance().run(getIssuesTask);
+        });
     }
 
     private void refresh( GLProjectNode projectNode ) {

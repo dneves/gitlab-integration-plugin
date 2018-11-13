@@ -4,6 +4,7 @@ import com.neon.intellij.plugins.gitlab.model.gitlab.GIPGroup;
 import com.neon.intellij.plugins.gitlab.model.gitlab.GIPIssue;
 import com.neon.intellij.plugins.gitlab.model.gitlab.GIPProject;
 import com.neon.intellij.plugins.gitlab.model.gitlab.GIPUser;
+import io.reactivex.Completable;
 import io.reactivex.Observable;
 import retrofit2.http.*;
 
@@ -34,7 +35,8 @@ public interface GitLabService {
 
     @POST( "projects/{projectId}/issues")
     Observable< GIPIssue > createIssue( @Path( "projectId" ) Integer projectId,
-                                        @Query( "title" ) String title );
+                                        @Query( "title" ) String title,
+                                        @Query( "description" ) String description );
 
     @PUT( "projects/{projectId}/issues/{issueIid}" )
     Observable< GIPIssue > updateIssue( @Path( "projectId" ) Integer projectId,
@@ -49,6 +51,6 @@ public interface GitLabService {
                                         @Query( "state_event" ) String state );
 
     @DELETE( "projects/{projectId}/issues/{issueIid}" )
-    Observable< GIPIssue > deleteIssue( @Path( "projectId" ) Integer projectId,
-                                        @Path( "issueIid" ) Integer projectIssueId );
+    Completable deleteIssue(@Path( "projectId" ) Integer projectId,
+                            @Path( "issueIid" ) Integer projectIssueId );
 }

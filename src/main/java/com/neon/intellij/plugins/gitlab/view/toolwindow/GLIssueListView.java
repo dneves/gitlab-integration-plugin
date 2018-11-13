@@ -72,6 +72,7 @@ public class GLIssueListView extends JPanel implements GIPGroupObserver, GIPProj
         projects.clear();
 
         ( ( DefaultMutableTreeNode ) filteredModel.getTreeModel().getRoot() ).removeAllChildren();
+        tree.treeDidChange();
     }
 
     @Override
@@ -106,6 +107,7 @@ public class GLIssueListView extends JPanel implements GIPGroupObserver, GIPProj
         }
 
         glProjectNode.removeAllChildren();
+        tree.treeDidChange();
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.neon.intellij.plugins.gitlab.view;
 
 import com.intellij.icons.AllIcons;
 import com.intellij.openapi.actionSystem.*;
+import com.intellij.ui.treeStructure.Tree;
 import com.neon.intellij.plugins.gitlab.*;
 import com.neon.intellij.plugins.gitlab.model.gitlab.GIPGroup;
 import com.neon.intellij.plugins.gitlab.model.gitlab.GIPIssue;
@@ -35,6 +36,9 @@ public class GitLabView extends JPanel implements GIPGroupObserver, GIPProjectOb
         this.add( glIssueListView, BorderLayout.CENTER );
     }
 
+    public < T > T[] getSelectedNodes( Class< T > clazz, Tree.NodeFilter< T > filter ) {
+        return glIssueListView.getSelectedNodes( clazz, filter );
+    }
 
     private Component buildActionsPanel( final JComponent target,
                                          final OpenIssueEditorAction openIssueEditorAction,
