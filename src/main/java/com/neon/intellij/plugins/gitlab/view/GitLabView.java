@@ -25,7 +25,7 @@ public class GitLabView extends JPanel implements GIPGroupObserver, GIPProjectOb
                       final RefreshProjectIssuesAction refreshProjectIssuesAction,
                       final DeleteIssueAction deleteIssueAction,
                       final ChangeIssueStateAction changeIssueStateAction) {
-        this.glIssueListView = new GLIssueListView( openIssueEditorAction, refreshProjectIssuesAction,
+        this.glIssueListView = new GLIssueListView(openIssueEditorAction, refreshProjectIssuesAction,
                 deleteIssueAction, changeIssueStateAction);
         this.glIssuesFilterView = new GLIssuesFilterView( glIssueListView );
 
@@ -39,8 +39,6 @@ public class GitLabView extends JPanel implements GIPGroupObserver, GIPProjectOb
     private Component buildActionsPanel( final JComponent target,
                                          final OpenIssueEditorAction openIssueEditorAction,
                                          final RefreshProjectIssuesAction refreshProjectIssuesAction ) {
-        final ActionManager actionManager = ActionManager.getInstance();
-
         final DefaultActionGroup actionGroup = new DefaultActionGroup();
         actionGroup.add( new AnAction( "Refresh All", "Refresh connection settings and projects list", AllIcons.Actions.Refresh ) {
             @Override
@@ -56,20 +54,29 @@ public class GitLabView extends JPanel implements GIPGroupObserver, GIPProjectOb
             }
         });
         actionGroup.addSeparator();
-        actionGroup.add(new AnAction( "New Issue", "", AllIcons.General.Add ) {
+        actionGroup.add( new AnAction("New Issue", "", AllIcons.General.Add) {
             @Override
             public void actionPerformed(AnActionEvent anActionEvent) {
-                GLProjectNode[] selected = glIssueListView.getSelectedNodes( GLProjectNode.class, null );
-                if ( selected != null && selected.length > 0 ) {
-                    GLProjectNode node = selected[ 0 ];
+                GLProjectNode[] selected = glIssueListView.getSelectedNodes(GLProjectNode.class, null);
+                if (selected != null && selected.length > 0) {
+                    GLProjectNode node = selected[0];
                     GIPProject project = node.getUserObject();
 
                     GIPIssue issue = new GIPIssue();
                     issue.project_id = project.id;
-                    openIssueEditorAction.accept( issue );
+                    openIssueEditorAction.accept(issue);
                 }
             }
-        });
+
+            @Override
+            public void update(AnActionEvent e) {
+                GLProjectNode[] glProjectNodes = glIssueListView.getSelectedNodes(GLProjectNode.class, null);
+
+                Presentation presentation = e.getPresentation();
+                presentation.setEnabled( glProjectNodes != null && glProjectNodes.length == 1 );
+            }
+        } );
+
 //        actionGroup.addSeparator();
 //        actionGroup.add( new AnAction( "Expand All", "", AllIcons.Actions.Expandall ) {
 //            @Override
@@ -90,6 +97,7 @@ public class GitLabView extends JPanel implements GIPGroupObserver, GIPProjectOb
 //            }
 //        });
 
+        ActionManager actionManager = ActionManager.getInstance();
         ActionToolbar actionToolbar = actionManager.createActionToolbar("Gitlab Integration Toolbar", actionGroup, false);
         actionToolbar.setTargetComponent( target );
         return actionToolbar.getComponent();
