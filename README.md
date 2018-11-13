@@ -19,7 +19,7 @@ You'll need the host and your API key from your gitlab (which you can find under
 
 ## Change notes
 
-<b>v1.1.0</b><br>
+( 2018-11-13 ) <b>v1.1.0</b><br>
 <ul>
     <li>Redone plugin to use Gitlab API v4</li>
 </ul>
