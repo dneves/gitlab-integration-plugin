@@ -20,4 +20,6 @@ public class GIPIssue {
 
     public GIPIssueAuthor author;
 
+    public String web_url;
+
 }

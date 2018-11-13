@@ -1,6 +1,7 @@
 package com.neon.intellij.plugins.gitlab.view.toolwindow;
 
 import com.intellij.icons.AllIcons;
+import com.intellij.ide.BrowserUtil;
 import com.intellij.openapi.diagnostic.Logger;
 import com.neon.intellij.plugins.gitlab.ChangeIssueStateAction;
 import com.neon.intellij.plugins.gitlab.DeleteIssueAction;
@@ -52,7 +53,17 @@ public class GLIssuePopup extends JPopupMenu {
         this.addSeparator();
         this.add( statesMenu );
 
-//        TODO: action to open issue in browser (web_url)
+        this.addSeparator();
+        JMenuItem openBrowser = new JMenuItem( "Open in Browser", AllIcons.General.Web);
+        openBrowser.addActionListener(e -> {
+            if ( issue.web_url == null || issue.web_url.trim().isEmpty() ) {
+                return ;
+            }
+
+            BrowserUtil.browse( issue.web_url );
+        });
+        openBrowser.setEnabled( issue.web_url != null && ! issue.web_url.trim().isEmpty() );
+        this.add( openBrowser );
     }
 
 }
