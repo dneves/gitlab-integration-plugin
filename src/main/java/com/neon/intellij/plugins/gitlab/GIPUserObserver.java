@@ -6,7 +6,9 @@ import java.util.List;
 
 public interface GIPUserObserver {
 
-    void onStart();
+    default void onStartUsersUpdate() {
+
+    }
 
     void accept(List< GIPUser > users);
 

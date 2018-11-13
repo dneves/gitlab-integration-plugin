@@ -45,7 +45,14 @@ public class GitLabView extends JPanel implements GIPGroupObserver, GIPProjectOb
         actionGroup.add( new AnAction( "Refresh All", "Refresh connection settings and projects list", AllIcons.Actions.Refresh ) {
             @Override
             public void actionPerformed(AnActionEvent anActionEvent) {
-                refreshProjectIssuesAction.accept( null );
+                GLProjectNode[] selected = glIssueListView.getSelectedNodes( GLProjectNode.class, null );
+                if ( selected != null && selected.length > 0 ) {
+                    for (GLProjectNode glProjectNode : selected) {
+                        refreshProjectIssuesAction.accept( glProjectNode );
+                    }
+                } else {
+                    refreshProjectIssuesAction.accept(null);
+                }
             }
         });
         actionGroup.addSeparator();
@@ -90,8 +97,18 @@ public class GitLabView extends JPanel implements GIPGroupObserver, GIPProjectOb
 
 
     @Override
+    public void onStartGroupsUpdate() {
+        glIssueListView.onStartGroupsUpdate();
+    }
+
+    @Override
     public void accept(GIPGroup group) {
         glIssueListView.accept( group );
+    }
+
+    @Override
+    public void onStartProjectUpdate( GIPProject project ) {
+        glIssueListView.onStartProjectUpdate( project );
     }
 
     @Override
@@ -105,8 +122,8 @@ public class GitLabView extends JPanel implements GIPGroupObserver, GIPProjectOb
     }
 
     @Override
-    public void onStart() {
-        glIssuesFilterView.onStart();
+    public void onStartUsersUpdate() {
+        glIssuesFilterView.onStartUsersUpdate();
     }
 
     @Override

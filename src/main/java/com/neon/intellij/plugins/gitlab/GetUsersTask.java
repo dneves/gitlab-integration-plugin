@@ -29,7 +29,7 @@ public class GetUsersTask extends Task.Backgroundable {
     public void run(@NotNull ProgressIndicator progressIndicator) {
         progressIndicator.setIndeterminate( true );
 
-        usersObserver.onStart();
+        usersObserver.onStartUsersUpdate();
 
         requestUsers( 1, usersObserver );
     }

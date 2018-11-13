@@ -84,7 +84,7 @@ public class GLIssuesFilterView extends JPanel implements GIPUserObserver {
 
 
     @Override
-    public void onStart() {
+    public void onStartUsersUpdate() {
         author.removeAllItems();
         assignee.removeAllItems();
 

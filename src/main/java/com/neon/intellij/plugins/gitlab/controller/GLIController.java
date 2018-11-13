@@ -9,6 +9,7 @@ import com.intellij.ui.content.ContentFactory;
 import com.neon.intellij.plugins.gitlab.*;
 import com.neon.intellij.plugins.gitlab.controller.editor.GLIssueVirtualFile;
 import com.neon.intellij.plugins.gitlab.model.gitlab.GIPIssue;
+import com.neon.intellij.plugins.gitlab.model.gitlab.GIPProject;
 import com.neon.intellij.plugins.gitlab.model.intellij.GLProjectNode;
 import com.neon.intellij.plugins.gitlab.view.GitLabView;
 
@@ -101,17 +102,28 @@ public class GLIController {
             GIPProjectObserver projectObserver = project -> {
                 SwingUtilities.invokeLater(() -> viewProjectObserver.accept( project ));
 
-                GetIssuesTask getIssuesTask = new GetIssuesTask(GLIController.this.project, gitLabService,
-                        issue -> SwingUtilities.invokeLater(() -> viewIssueObserver.accept(issue)), project.id);
-                ProgressManager.getInstance().run(getIssuesTask);
+                updateProjectIssues( gitLabService, project, viewProjectObserver, viewIssueObserver );
             };
 
             GetProjectsTask getProjectsTask = new GetProjectsTask( project, gitLabService, projectObserver, group.id);
             ProgressManager.getInstance().run(getProjectsTask);
         };
+
+        groupObserver.onStartGroupsUpdate();
         ProgressManager.getInstance().run( new GetGroupsTask( project, gitLabService, groupObserver ) );
 
         ProgressManager.getInstance().run( new GetUsersTask( project, gitLabService, viewUserObserver ) );
+    }
+
+    private void updateProjectIssues( GitLabService gitLabService, GIPProject project,
+                                      GIPProjectObserver viewProjectObserver,
+                                      GIPIssueObserver viewIssueObserver ) {
+        SwingUtilities.invokeLater(() ->
+                viewProjectObserver.onStartProjectUpdate( project ) );
+
+        GetIssuesTask getIssuesTask = new GetIssuesTask(GLIController.this.project, gitLabService,
+                issue -> SwingUtilities.invokeLater(() -> viewIssueObserver.accept(issue)), project.id);
+        ProgressManager.getInstance().run(getIssuesTask);
     }
 
     private void refresh( GLProjectNode projectNode ) {
@@ -120,7 +132,7 @@ public class GLIController {
             return ;
         }
 
-//        TODO: refresh only this project's issues
+        updateProjectIssues( gitLabServiceSupplier.get(), projectNode.getUserObject(), view, view );
     }
 
 }

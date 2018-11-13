@@ -67,6 +67,14 @@ public class GLIssueListView extends JPanel implements GIPGroupObserver, GIPProj
 
 
     @Override
+    public void onStartGroupsUpdate() {
+        groups.clear();
+        projects.clear();
+
+        ( ( DefaultMutableTreeNode ) filteredModel.getTreeModel().getRoot() ).removeAllChildren();
+    }
+
+    @Override
     public void accept( GIPGroup group ) {
         LOGGER.info( "[group] " + group.id + ". " + group.name );
 
@@ -88,6 +96,16 @@ public class GLIssueListView extends JPanel implements GIPGroupObserver, GIPProj
         groups.put( group.id, glGroupNode );
 
         root.add(glGroupNode);
+    }
+
+    @Override
+    public void onStartProjectUpdate( GIPProject project ) {
+        GLProjectNode glProjectNode = projects.get(project.id);
+        if ( glProjectNode == null ) {
+            return ;
+        }
+
+        glProjectNode.removeAllChildren();
     }
 
     @Override
