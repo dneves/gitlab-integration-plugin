@@ -7,4 +7,5 @@ gitlab-integration-plugin.zip
 *.ipr
 *.iws
 build/
+gradle.properties
 
