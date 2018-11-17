@@ -1,7 +1,7 @@
 <idea-plugin version="2">
   <id>com.neon.intellij.plugins.gitlab</id>
   <name>GitLab Integration Plugin</name>
-  <version>1.1.0</version>
+  <version>1.1.1</version>
   <vendor email="diogo.sousa.neves@gmail.com" url="">Diogo Neves</vendor>
 
   <description><![CDATA[
@@ -24,6 +24,11 @@
     ]]></description>
 
   <change-notes><![CDATA[
+  ( 2018-11-17 ) <b>v1.1.1</b><br>
+  <ul>
+      <li>Minor improvements to the plugin initialization</li>
+      <li>Minor improvements to the plugin settings view</li>
+  </ul>
   ( 2018-11-13 ) <b>v1.1.0</b><br>
     <ul>
         <li>Redone plugin to use Gitlab API v4</li>

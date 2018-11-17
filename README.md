@@ -19,6 +19,11 @@ You'll need the host and your API key from your gitlab (which you can find under
 
 ## Change notes
 
+( 2018-11-17 ) <b>v1.1.1</b><br>
+<ul>
+    <li>Minor improvements to the plugin initialization</li>
+    <li>Minor improvements to the plugin settings view</li>
+</ul>
 ( 2018-11-13 ) <b>v1.1.0</b><br>
 <ul>
     <li>Redone plugin to use Gitlab API v4</li>
@@ -62,7 +67,7 @@ Author:: Diogo Neves ( <a href="mailto:diogo.sousa.neves@gmail.com">diogo.sousa.
 
 The MIT License (MIT)
 
-Copyright (c) 2014 Diogo Neves
+Copyright (c) 2018 Diogo Neves
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
