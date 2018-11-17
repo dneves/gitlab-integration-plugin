@@ -1,5 +1,6 @@
 package com.neon.intellij.plugins.gitlab;
 
+import com.intellij.ide.plugins.PluginManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.progress.Task;
@@ -57,7 +58,9 @@ public class GetUsersTask extends Task.Backgroundable {
 
                     @Override
                     public void onError(Throwable e) {
+                        LOG.error( e.getLocalizedMessage(), e );
 
+                        PluginManager.getLogger().error( e );
                     }
 
                     @Override

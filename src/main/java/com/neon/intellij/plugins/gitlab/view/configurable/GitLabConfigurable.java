@@ -3,20 +3,36 @@ package com.neon.intellij.plugins.gitlab.view.configurable;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.options.SearchableConfigurable;
 import com.neon.intellij.plugins.gitlab.model.intellij.ConfigurableState;
-import javax.swing.JComponent;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import javax.swing.*;
+import java.net.URI;
 
 public class GitLabConfigurable implements SearchableConfigurable {
 
     private final ConfigurableState settings = ConfigurableState.getInstance();
 
+    private static GitLabConfigurable INSTANCE = null;
+
     private SettingsView view;
 
+    private Runnable onApply;
 
-    public GitLabConfigurable( ) {
+    private GitLabConfigurable( ) {
 
+    }
+
+    public static GitLabConfigurable getInstance() {
+        if ( INSTANCE == null ) {
+            INSTANCE = new GitLabConfigurable();
+        }
+        return INSTANCE;
+    }
+
+    public void onApply( Runnable runnable ) {
+        this.onApply = runnable;
     }
 
     @Nls
@@ -57,8 +73,25 @@ public class GitLabConfigurable implements SearchableConfigurable {
     @Override
     public void apply() throws ConfigurationException {
         Object[] save = view.save();
-        settings.setHost( ( String ) save[0] );
-        settings.setToken( ( String ) save[1] );
+
+        String host = (String) save[0];
+        if ( host != null && ! host.trim().isEmpty() ) {
+            try {
+                new URI(host).toURL();
+            } catch ( Exception e) {
+                throw new ConfigurationException("invalid gitlab url");
+            }
+        }
+
+        if (host != null && ! host.trim().isEmpty()) {
+            String token = (String) save[1];
+            if (token == null || token.trim().isEmpty()) {
+                throw new ConfigurationException("invalid gitlab authentication token");
+            }
+        }
+
+        settings.setHost((String) save[0]);
+        settings.setToken((String) save[1]);
         settings.setIgnoreCertificateErrors( ( Boolean ) save[2] );
     }
 
@@ -75,6 +108,8 @@ public class GitLabConfigurable implements SearchableConfigurable {
     @Override
     public void disposeUIResources() {
         view = null;
+
+        onApply.run();
     }
 
     @NotNull

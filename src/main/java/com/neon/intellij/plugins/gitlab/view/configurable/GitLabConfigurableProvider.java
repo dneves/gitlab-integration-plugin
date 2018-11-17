@@ -13,7 +13,8 @@ public class GitLabConfigurableProvider extends ConfigurableProvider {
     @Nullable
     @Override
     public Configurable createConfigurable() {
-        return new GitLabConfigurable();
+//        return new GitLabConfigurable();
+        return GitLabConfigurable.getInstance();
     }
 
 }

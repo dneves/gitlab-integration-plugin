@@ -76,7 +76,9 @@
                           serviceImplementation="com.neon.intellij.plugins.gitlab.model.intellij.ConfigurableState"/>
 
       <!-- provider for the configurable instance ( configuration settings ) -->
-      <applicationConfigurable id="GitLabConfigurableProvider" provider="com.neon.intellij.plugins.gitlab.view.configurable.GitLabConfigurableProvider" />
+      <applicationConfigurable id="GitLabConfigurableProvider"
+                               groupId="tools"
+                               provider="com.neon.intellij.plugins.gitlab.view.configurable.GitLabConfigurableProvider" />
 
       <!-- plugin tool window -->
       <toolWindow id="GitLabIntegration" anchor="bottom"

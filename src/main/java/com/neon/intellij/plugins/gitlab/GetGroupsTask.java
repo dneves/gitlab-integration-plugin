@@ -1,5 +1,6 @@
 package com.neon.intellij.plugins.gitlab;
 
+import com.intellij.ide.plugins.PluginManager;
 import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.progress.Task;
 import com.intellij.openapi.project.Project;
@@ -58,6 +59,8 @@ public class GetGroupsTask extends Task.Backgroundable {
                     @Override
                     public void onError(Throwable e) {
                         LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e );
+
+                        PluginManager.getLogger().error( e );
                     }
 
                     @Override

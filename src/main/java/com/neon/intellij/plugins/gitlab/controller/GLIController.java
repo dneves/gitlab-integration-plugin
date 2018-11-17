@@ -3,9 +3,6 @@ package com.neon.intellij.plugins.gitlab.controller;
 
 import com.intellij.openapi.progress.ProgressManager;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.wm.ToolWindow;
-import com.intellij.ui.content.Content;
-import com.intellij.ui.content.ContentFactory;
 import com.neon.intellij.plugins.gitlab.*;
 import com.neon.intellij.plugins.gitlab.controller.editor.GLIssueVirtualFile;
 import com.neon.intellij.plugins.gitlab.model.gitlab.GIPIssue;
@@ -22,34 +19,31 @@ public class GLIController {
 
     private final Project project;
 
-    private final ToolWindow toolWindow;
-
     private final JBFacade jbFacade;
 
     private final GitLabView view;
 
     private final GitLabServiceSupplier gitLabServiceSupplier;
 
-    public GLIController(final Project project, final ToolWindow toolWindow, final GitLabServiceSupplier gitLabServiceSupplier) {
+    public GLIController(final Project project, final GitLabServiceSupplier gitLabServiceSupplier) {
         this.project = project;
-        this.toolWindow = toolWindow;
         this.gitLabServiceSupplier = gitLabServiceSupplier;
 
         this.jbFacade = new JBFacade( project );
 
-        this.view = new GitLabView(
+        this.view = new GitLabView( project,
                 gipIssue -> openEditor( gipIssue ),
                 projectNode -> refresh( projectNode ),
                 gipIssue -> deleteIssue( gipIssue),
                 (gipIssue, newState) -> changeState( gipIssue, newState ));
     }
 
+    public GitLabView getView() {
+        return view;
+    }
+
     public void run() {
         refresh( view, view, view, view );
-
-        ContentFactory contentFactory = ContentFactory.SERVICE.getInstance();
-        Content content = contentFactory.createContent( view, "", false );
-        toolWindow.getContentManager().addContent( content );
     }
 
     private void openEditor( GIPIssue issue ) {

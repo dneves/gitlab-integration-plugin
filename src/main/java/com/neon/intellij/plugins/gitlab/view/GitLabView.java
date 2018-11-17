@@ -2,6 +2,8 @@ package com.neon.intellij.plugins.gitlab.view;
 
 import com.intellij.icons.AllIcons;
 import com.intellij.openapi.actionSystem.*;
+import com.intellij.openapi.options.ShowSettingsUtil;
+import com.intellij.openapi.project.Project;
 import com.intellij.ui.treeStructure.Tree;
 import com.neon.intellij.plugins.gitlab.*;
 import com.neon.intellij.plugins.gitlab.model.gitlab.GIPGroup;
@@ -9,6 +11,7 @@ import com.neon.intellij.plugins.gitlab.model.gitlab.GIPIssue;
 import com.neon.intellij.plugins.gitlab.model.gitlab.GIPProject;
 import com.neon.intellij.plugins.gitlab.model.gitlab.GIPUser;
 import com.neon.intellij.plugins.gitlab.model.intellij.GLProjectNode;
+import com.neon.intellij.plugins.gitlab.view.configurable.GitLabConfigurable;
 import com.neon.intellij.plugins.gitlab.view.toolwindow.GLIssueListView;
 import com.neon.intellij.plugins.gitlab.view.toolwindow.GLIssuesFilterView;
 
@@ -22,10 +25,15 @@ public class GitLabView extends JPanel implements GIPGroupObserver, GIPProjectOb
 
     private final GLIssuesFilterView glIssuesFilterView;
 
-    public GitLabView(final OpenIssueEditorAction openIssueEditorAction,
+    private final Project project;
+
+    public GitLabView(final Project project,
+                      final OpenIssueEditorAction openIssueEditorAction,
                       final RefreshProjectIssuesAction refreshProjectIssuesAction,
                       final DeleteIssueAction deleteIssueAction,
                       final ChangeIssueStateAction changeIssueStateAction) {
+        this.project = project;
+
         this.glIssueListView = new GLIssueListView(openIssueEditorAction, refreshProjectIssuesAction,
                 deleteIssueAction, changeIssueStateAction);
         this.glIssuesFilterView = new GLIssuesFilterView( glIssueListView );
@@ -44,6 +52,14 @@ public class GitLabView extends JPanel implements GIPGroupObserver, GIPProjectOb
                                          final OpenIssueEditorAction openIssueEditorAction,
                                          final RefreshProjectIssuesAction refreshProjectIssuesAction ) {
         final DefaultActionGroup actionGroup = new DefaultActionGroup();
+
+        actionGroup.add(new AnAction( "Settings", "Open plugin settings", AllIcons.General.Settings ) {
+            @Override
+            public void actionPerformed(AnActionEvent e) {
+                ShowSettingsUtil.getInstance().showSettingsDialog( project, GitLabConfigurable.class );
+            }
+        });
+        actionGroup.addSeparator();
         actionGroup.add( new AnAction( "Refresh All", "Refresh connection settings and projects list", AllIcons.Actions.Refresh ) {
             @Override
             public void actionPerformed(AnActionEvent anActionEvent) {
