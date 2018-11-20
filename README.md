@@ -19,6 +19,10 @@ You'll need the host and your API key from your gitlab (which you can find under
 
 ## Change notes
 
+( 2018-11-20 ) <b>v1.1.2</b><br>
+<ul>
+    <li>Fixing nullpointer (for now)</li>
+</ul>
 ( 2018-11-17 ) <b>v1.1.1</b><br>
 <ul>
     <li>Minor improvements to the plugin initialization</li>
