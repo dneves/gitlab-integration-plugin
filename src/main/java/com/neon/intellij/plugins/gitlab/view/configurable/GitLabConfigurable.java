@@ -108,8 +108,9 @@ public class GitLabConfigurable implements SearchableConfigurable {
     @Override
     public void disposeUIResources() {
         view = null;
-
-        onApply.run();
+        if ( onApply != null ) {
+            onApply.run();
+        }
     }
 
     @NotNull

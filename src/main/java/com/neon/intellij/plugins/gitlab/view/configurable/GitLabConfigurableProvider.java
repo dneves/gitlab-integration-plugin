@@ -13,7 +13,7 @@ public class GitLabConfigurableProvider extends ConfigurableProvider {
     @Nullable
     @Override
     public Configurable createConfigurable() {
-//        return new GitLabConfigurable();
+//        TODO: should set onApply on gitlab configurable so the view updates itself automatically
         return GitLabConfigurable.getInstance();
     }
 
